@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-:root{--accent:#A98BFF;--bg:#0D1230;--bg2:#131A3D;--line:#262E5A;--text:#F3F2F8;--sub:#D3D6E8;--muted:#A3A8C6;--sand:#D8CBB4}
+:root{--accent:#15489E;--bg:#FEF7ED;--bg2:#F6EDDF;--line:#E2D6C2;--edge:#C9BBA3;--text:#1A2033;--sub:#3D4459;--muted:#646A7E}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text);font-family:'Noto Sans KR',system-ui,sans-serif;line-height:1.7}
 a{color:var(--accent)}
@@ -20,7 +20,7 @@ a{color:var(--accent)}
 .kicker{font-size:14px;letter-spacing:.2em;color:var(--accent)}
 header{display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:16px;padding-top:28px;padding-bottom:28px}
 nav{display:flex;flex-wrap:wrap;gap:24px;font-size:15px}
-nav a{color:#BFC3DD;text-decoration:none;padding:10px 0}
+nav a{color:var(--sub);text-decoration:none;padding:10px 0}
 nav a:hover{color:var(--text)}
 .hero{padding-top:96px;padding-bottom:48px;display:flex;flex-direction:column;gap:28px}
 .hero h1{margin:0;font-weight:700;font-size:clamp(64px,12vw,168px);line-height:1.02;letter-spacing:-.02em}
@@ -28,7 +28,7 @@ nav a:hover{color:var(--text)}
 .lead{margin:0;max-width:560px;font-size:20px;color:var(--sub)}
 .btns{display:flex;flex-wrap:wrap;gap:16px;align-items:center;margin-top:12px}
 .btn{display:inline-flex;align-items:center;min-height:52px;padding:0 28px;border-radius:999px;background:var(--accent);color:var(--bg);font-weight:700;text-decoration:none;font-size:16px}
-.btn.ghost{background:transparent;border:1px solid #4A5288;color:var(--text);font-weight:400}
+.btn.ghost{background:transparent;border:1px solid var(--edge);color:var(--text);font-weight:400}
 .btn.outline{background:transparent;border:1px solid var(--accent);color:var(--accent);font-weight:500}
 .bridge{width:100%;overflow:hidden;line-height:0}
 .bridge svg{display:block;width:100%;height:clamp(240px,34vw,480px)}
@@ -46,7 +46,7 @@ section h2{margin:0;font-size:clamp(36px,5vw,56px);line-height:1.2}
 .count b{font-family:'Gowun Batang',serif;font-size:48px;color:var(--accent)}
 .album{background:var(--bg2)}
 .album .grid2{padding-top:112px;padding-bottom:112px;align-items:center}
-.cover{aspect-ratio:1/1;width:100%;max-width:460px;border:1px dashed #4A5288;border-radius:4px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:15px;overflow:hidden}
+.cover{aspect-ratio:1/1;width:100%;max-width:460px;border:1px dashed var(--edge);border-radius:4px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:15px;overflow:hidden}
 .cover img{width:100%;height:100%;object-fit:cover;display:block}
 .tracks{font-size:15px;color:var(--muted)}
 .hidden-track{font-size:16px;color:var(--accent);font-weight:500}
@@ -56,9 +56,9 @@ section h2{margin:0;font-size:clamp(36px,5vw,56px);line-height:1.2}
 .card{border:1px solid var(--line);border-radius:4px;padding:20px 22px}
 .card div:first-child{font-size:13px;color:var(--muted)}
 .card div:last-child{font-size:17px;font-weight:500}
-footer{background:var(--sand)}
-footer .wrap{padding-top:40px;padding-bottom:40px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;font-size:14px;color:#4E4760}
-footer a{color:#1E1A33}
+footer{background:var(--accent)}
+footer .wrap{padding-top:40px;padding-bottom:40px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;font-size:14px;color:#E4E9F4}
+footer a{color:var(--bg)}
 .links{display:flex;flex-wrap:wrap;gap:6px 16px}
 [hidden]{display:none!important}
 </style>
@@ -419,7 +419,7 @@ footer a{color:#1E1A33}
 </footer>
 
 <script>
-var DEFAULT = {"accent": "#A98BFF", "hero": {"kicker": "SINGER-SONGWRITER · 부산 광안리", "title": "양희본", "titleAccent": "0집", "lead": "발라드와 모던록, 포크 사이 어딘가.\n조용히, 끝까지 들어야 하는 노래들.", "primaryButton": "유튜브 채널 구독", "secondaryButton": "0집 음반 보기"}, "live": {"headline": "100일 동안,\n매일 한 시간.", "description": "12월 14일부터 100일 동안, 부산 광안리에서 하루도 빠짐없이 유튜브 세로 라이브로 노래합니다. 0집의 노래들, 그리고 그 사이의 이야기들.", "startDate": "2026-12-14", "days": 100, "time": "매일 [방송 시간]", "place": "부산 광안리 · 유튜브 양희본"}, "album": {"title": "양희본 0집", "description": "첫 번째보다 앞에 있는 음반. 손으로 만지고, 처음부터 끝까지 들을 수 있는 실물 음반으로 만나보세요.", "tracklist": "[수록곡 목록]", "hiddenTrack": "어디에서도 들을 수 없는 히든 트랙 1곡 수록", "price": "[가격]", "buyUrl": "https://heebonyang.web.app/shop", "buyButton": "음반 구매하기", "coverImage": ""}, "concert": {"headline": "2027. 03. 27 토요일\n부산에서.", "description": "100일의 라이브가 끝나고 나흘 뒤, 무대에서 직접 부릅니다.", "venue": "[공연장]", "time": "[공연 시간]", "ticket": "[티켓 가격]", "ticketUrl": "", "ticketButton": "예매 알림 받기"}, "links": {"youtube": "", "instagram": "", "email": ""}};
+var DEFAULT = {"accent": "#15489E", "hero": {"kicker": "SINGER-SONGWRITER · 부산 광안리", "title": "양희본", "titleAccent": "0집", "lead": "발라드와 모던록, 포크 사이 어딘가.\n조용히, 끝까지 들어야 하는 노래들.", "primaryButton": "유튜브 채널 구독", "secondaryButton": "0집 음반 보기"}, "live": {"headline": "100일 동안,\n매일 한 시간.", "description": "12월 14일부터 100일 동안, 부산 광안리에서 하루도 빠짐없이 유튜브 세로 라이브로 노래합니다. 0집의 노래들, 그리고 그 사이의 이야기들.", "startDate": "2026-12-14", "days": 100, "time": "매일 [방송 시간]", "place": "부산 광안리 · 유튜브 양희본"}, "album": {"title": "양희본 0집", "description": "첫 번째보다 앞에 있는 음반. 손으로 만지고, 처음부터 끝까지 들을 수 있는 실물 음반으로 만나보세요.", "tracklist": "[수록곡 목록]", "hiddenTrack": "어디에서도 들을 수 없는 히든 트랙 1곡 수록", "price": "[가격]", "buyUrl": "https://heebonyang.web.app/shop", "buyButton": "음반 구매하기", "coverImage": ""}, "concert": {"headline": "2027. 03. 27 토요일\n부산에서.", "description": "100일의 라이브가 끝나고 나흘 뒤, 무대에서 직접 부릅니다.", "venue": "[공연장]", "time": "[공연 시간]", "ticket": "[티켓 가격]", "ticketUrl": "", "ticketButton": "예매 알림 받기"}, "links": {"youtube": "", "instagram": "", "email": ""}};
 function get(o, path){ return path.split('.').reduce(function(a,k){ return a == null ? a : a[k]; }, o); }
 function fmt(d){
   var w = ['일','월','화','수','목','금','토'][d.getDay()];
@@ -430,7 +430,7 @@ function setLink(el, url){
   else { el.removeAttribute('href'); el.style.opacity = '.55'; el.style.cursor = 'default'; }
 }
 function render(c){
-  document.documentElement.style.setProperty('--accent', c.accent || '#A98BFF');
+  document.documentElement.style.setProperty('--accent', c.accent || '#15489E');
   document.querySelectorAll('[data-bind]').forEach(function(el){
     var v = get(c, el.getAttribute('data-bind'));
     el.textContent = v == null ? '' : v;
