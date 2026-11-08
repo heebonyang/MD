@@ -21,8 +21,8 @@
     "description": "첫 번째보다 앞에 있는 음반. 손으로 만지고, 처음부터 끝까지 들을 수 있는 실물 음반으로 만나보세요.",
     "tracklist": "[수록곡 목록]",
     "hiddenTrack": "어디에서도 들을 수 없는 히든 트랙 1곡 수록",
-    "price": "[가격]",
-    "buyUrl": "https://heebonyang.web.app/shop",
+    "price": "10,000원 · 택배비 포함",
+    "buyUrl": "#order",
     "buyButton": "음반 구매하기",
     "coverImage": ""
   },
@@ -39,5 +39,12 @@
     "youtube": "",
     "instagram": "",
     "email": ""
+  },
+  "order": {
+    "unitPrice": 10000,
+    "priceNote": "택배비 포함",
+    "maxQty": 10,
+    "bank": "신한은행 957-06-111158 양희본",
+    "notice": "입금이 확인되면 최대한 빨리 보내드려요."
   }
 }

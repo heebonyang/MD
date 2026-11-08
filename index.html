@@ -60,6 +60,47 @@ footer{background:var(--accent)}
 footer .wrap{padding-top:40px;padding-bottom:40px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;font-size:14px;color:#E4E9F4}
 footer a{color:var(--bg)}
 .links{display:flex;flex-wrap:wrap;gap:6px 16px}
+.order{background:var(--bg2);border-top:1px solid var(--line)}
+.order .grid2{padding-top:96px;padding-bottom:112px;align-items:start}
+.stock{border:1px solid var(--line);border-radius:4px;padding:18px 20px;background:var(--bg)}
+.stock-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.stock-top b{font-family:'Gowun Batang',serif;font-size:28px;color:var(--accent)}
+.stock-top small{color:var(--muted);font-size:14px}
+.meter{height:6px;border-radius:999px;background:var(--line);margin-top:10px;overflow:hidden}
+.meter i{display:block;height:100%;background:var(--accent);border-radius:999px}
+.steps{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:14px;font-size:16px;color:var(--sub)}
+.steps li{display:flex;gap:12px}
+.steps li>span:first-child{flex:none;width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--bg);display:grid;place-items:center;font-size:13px;font-weight:700;margin-top:1px}
+.bank{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding:14px 18px;border-radius:4px;background:var(--bg);border:1px solid var(--line);font-weight:500;color:var(--text)}
+.linkbtn{background:none;border:0;padding:0;font:inherit;font-size:14px;color:var(--accent);text-decoration:underline;text-underline-offset:4px;cursor:pointer}
+.form{display:flex;flex-direction:column;gap:18px;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:28px}
+.form label{display:block;font-size:14px;color:var(--sub);margin-bottom:6px;font-weight:500}
+.form label small{color:var(--muted);font-weight:400;margin-left:6px}
+.form input[type=text],.form input[type=tel],.form textarea,.form select{width:100%;font:inherit;font-size:16px;color:var(--text);background:#fff;border:1px solid var(--edge);border-radius:4px;padding:12px 14px}
+.form textarea{min-height:76px;resize:vertical}
+.form input:focus,.form textarea:focus,.form select:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:18px}
+.qty{display:flex;align-items:center;border:1px solid var(--edge);border-radius:4px;background:#fff;width:fit-content}
+.qty button{width:48px;height:48px;border:0;background:none;font-size:22px;color:var(--accent);cursor:pointer}
+.qty button:disabled{color:var(--edge);cursor:default}
+.qty output{min-width:44px;text-align:center;font-size:18px;font-weight:700}
+.total{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding-top:16px;border-top:1px solid var(--line);flex-wrap:wrap}
+.total span{color:var(--muted)}
+.total b{font-size:24px;color:var(--text)}
+.agree{display:flex;gap:10px;align-items:flex-start;font-size:15px;color:var(--sub)}
+.agree input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--accent);flex:none}
+.agree details{margin-top:4px;font-size:13px;color:var(--muted)}
+.agree summary{cursor:pointer;color:var(--sub)}
+.agree ul{margin:8px 0 0;padding-left:18px}
+.form .btn{width:100%;justify-content:center;border:0;cursor:pointer;font-family:inherit}
+.form .btn:disabled{opacity:.5;cursor:default}
+.err{margin:0;color:#B3261E;font-size:15px}
+.done{display:flex;flex-direction:column;gap:16px;background:var(--bg);border:1px solid var(--accent);border-radius:6px;padding:28px}
+.done h3{margin:0;font-size:24px}
+.done p{margin:0;color:var(--sub)}
+.done dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:8px 18px}
+.done dt{color:var(--muted)}
+.done dd{margin:0;font-weight:500}
 [hidden]{display:none!important}
 </style>
 </head>
@@ -399,6 +440,79 @@ footer a{color:var(--bg)}
   </div>
 </section>
 
+<section id="order" class="order">
+  <div class="wrap grid2">
+    <div class="col">
+      <div class="kicker">ORDER</div>
+      <h2 class="serif">주문하기</h2>
+      <div class="stock" id="stockBox" hidden>
+        <div class="stock-top"><span>한정판 <span id="stockTotal"></span>장</span><span><b id="stockLeft"></b> <small>장 남음</small></span></div>
+        <div class="meter" aria-hidden="true"><i id="stockBar"></i></div>
+      </div>
+      <ol class="steps">
+        <li><span>1</span><span>주문서를 작성해 주세요.</span></li>
+        <li><span>2</span><span>안내되는 금액을 아래 계좌로 입금해 주세요. <span id="priceLine"></span></span></li>
+        <li><span>3</span><span data-bind="order.notice"></span></li>
+      </ol>
+      <div class="bank"><span data-bind="order.bank"></span><button type="button" class="linkbtn" data-copy="bank">계좌번호 복사</button></div>
+    </div>
+
+    <div>
+      <p class="desc" id="soldOut" hidden>준비한 음반이 모두 판매됐어요. 사랑해 주셔서 고맙습니다.</p>
+      <form class="form" id="orderForm" novalidate>
+        <div class="two">
+          <div><label for="oName">이름</label><input type="text" id="oName" autocomplete="name" maxlength="30" required></div>
+          <div><label for="oPhone">연락처</label><input type="tel" id="oPhone" autocomplete="tel" inputmode="tel" placeholder="010-1234-5678" maxlength="14" required></div>
+        </div>
+        <div><label for="oAddr">받는 주소 <small>우편번호가 있으면 함께 적어 주세요</small></label><textarea id="oAddr" autocomplete="street-address" maxlength="200" required></textarea></div>
+        <div class="two">
+          <div>
+            <label id="qtyLabel">수량</label>
+            <div class="qty" role="group" aria-labelledby="qtyLabel">
+              <button type="button" id="qtyMinus" aria-label="한 장 빼기">−</button>
+              <output id="qtyOut" aria-live="polite">1</output>
+              <button type="button" id="qtyPlus" aria-label="한 장 더하기">+</button>
+            </div>
+          </div>
+          <div><label for="oDepositor">입금자명 <small>주문자와 다를 때만</small></label><input type="text" id="oDepositor" maxlength="30"></div>
+        </div>
+        <div><label for="oMemo">요청사항 <small>선택</small></label><textarea id="oMemo" maxlength="300"></textarea></div>
+        <div class="total"><span>입금하실 금액</span><b id="totalOut"></b></div>
+        <div class="agree">
+          <input type="checkbox" id="oAgree" required>
+          <div>
+            <label for="oAgree" style="margin:0;font-weight:400;font-size:15px">[필수] 개인정보 수집·이용에 동의해요</label>
+            <details>
+              <summary>자세히 보기</summary>
+              <ul>
+                <li>수집 항목: 이름, 연락처, 주소, 입금자명, 요청사항</li>
+                <li>이용 목적: 입금 확인, 음반 발송, 주문 관련 연락</li>
+                <li>보관 기간: 발송 완료 후 1년 (법령에 따라 보관해야 하는 경우 그 기간)</li>
+                <li>동의하지 않으실 수 있지만, 이 경우 주문할 수 없어요.</li>
+              </ul>
+            </details>
+          </div>
+        </div>
+        <p class="err" id="orderErr" role="alert" hidden></p>
+        <button type="submit" class="btn" id="orderSubmit">주문하기</button>
+      </form>
+
+      <div class="done" id="orderDone" hidden tabindex="-1">
+        <div class="kicker">THANK YOU</div>
+        <h3 class="serif">주문이 접수됐어요.</h3>
+        <p>아래 계좌로 입금해 주시면, 확인 후 보내드릴게요.</p>
+        <dl>
+          <dt>주문번호</dt><dd id="dNo"></dd>
+          <dt>입금 금액</dt><dd id="dAmount"></dd>
+          <dt>입금자명</dt><dd id="dDepositor"></dd>
+          <dt>입금 계좌</dt><dd><span data-bind="order.bank"></span> <button type="button" class="linkbtn" data-copy="bank">복사</button></dd>
+        </dl>
+        <p style="font-size:14px;color:var(--muted)">이 화면을 캡처해 두시면 편해요. 문의할 때 주문번호를 알려 주세요.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="concert" class="wrap concert">
   <div class="kicker">CONCERT</div>
   <h2 class="serif pre" data-bind="concert.headline"></h2>
@@ -419,17 +533,19 @@ footer a{color:var(--bg)}
 </footer>
 
 <script>
-var DEFAULT = {"accent": "#15489E", "hero": {"kicker": "SINGER-SONGWRITER · 부산 광안리", "title": "양희본", "titleAccent": "0집", "lead": "발라드와 모던록, 포크 사이 어딘가.\n조용히, 끝까지 들어야 하는 노래들.", "primaryButton": "유튜브 채널 구독", "secondaryButton": "0집 음반 보기"}, "live": {"headline": "100일 동안,\n매일 한 시간.", "description": "12월 14일부터 100일 동안, 부산 광안리에서 하루도 빠짐없이 유튜브 세로 라이브로 노래합니다. 0집의 노래들, 그리고 그 사이의 이야기들.", "startDate": "2026-12-14", "days": 100, "time": "매일 [방송 시간]", "place": "부산 광안리 · 유튜브 양희본"}, "album": {"title": "양희본 0집", "description": "첫 번째보다 앞에 있는 음반. 손으로 만지고, 처음부터 끝까지 들을 수 있는 실물 음반으로 만나보세요.", "tracklist": "[수록곡 목록]", "hiddenTrack": "어디에서도 들을 수 없는 히든 트랙 1곡 수록", "price": "[가격]", "buyUrl": "https://heebonyang.web.app/shop", "buyButton": "음반 구매하기", "coverImage": ""}, "concert": {"headline": "2027. 03. 27 토요일\n부산에서.", "description": "100일의 라이브가 끝나고 나흘 뒤, 무대에서 직접 부릅니다.", "venue": "[공연장]", "time": "[공연 시간]", "ticket": "[티켓 가격]", "ticketUrl": "", "ticketButton": "예매 알림 받기"}, "links": {"youtube": "", "instagram": "", "email": ""}};
+var DEFAULT = {"accent": "#15489E", "hero": {"kicker": "SINGER-SONGWRITER · 부산 광안리", "title": "양희본", "titleAccent": "0집", "lead": "발라드와 모던록, 포크 사이 어딘가.\n조용히, 끝까지 들어야 하는 노래들.", "primaryButton": "유튜브 채널 구독", "secondaryButton": "0집 음반 보기"}, "live": {"headline": "100일 동안,\n매일 한 시간.", "description": "12월 14일부터 100일 동안, 부산 광안리에서 하루도 빠짐없이 유튜브 세로 라이브로 노래합니다. 0집의 노래들, 그리고 그 사이의 이야기들.", "startDate": "2026-12-14", "days": 100, "time": "매일 [방송 시간]", "place": "부산 광안리 · 유튜브 양희본"}, "album": {"title": "양희본 0집", "description": "첫 번째보다 앞에 있는 음반. 손으로 만지고, 처음부터 끝까지 들을 수 있는 실물 음반으로 만나보세요.", "tracklist": "[수록곡 목록]", "hiddenTrack": "어디에서도 들을 수 없는 히든 트랙 1곡 수록", "price": "10,000원 · 택배비 포함", "buyUrl": "#order", "buyButton": "음반 구매하기", "coverImage": ""}, "order": {"unitPrice": 10000, "priceNote": "택배비 포함", "maxQty": 10, "bank": "신한은행 957-06-111158 양희본", "notice": "입금이 확인되면 최대한 빨리 보내드려요."}, "concert": {"headline": "2027. 03. 27 토요일\n부산에서.", "description": "100일의 라이브가 끝나고 나흘 뒤, 무대에서 직접 부릅니다.", "venue": "[공연장]", "time": "[공연 시간]", "ticket": "[티켓 가격]", "ticketUrl": "", "ticketButton": "예매 알림 받기"}, "links": {"youtube": "", "instagram": "", "email": ""}};
 function get(o, path){ return path.split('.').reduce(function(a,k){ return a == null ? a : a[k]; }, o); }
 function fmt(d){
   var w = ['일','월','화','수','목','금','토'][d.getDay()];
   return d.getFullYear() + '. ' + String(d.getMonth()+1).padStart(2,'0') + '. ' + String(d.getDate()).padStart(2,'0') + ' (' + w + ')';
 }
 function setLink(el, url){
-  if (url) { el.href = url; el.target = '_blank'; el.rel = 'noopener'; el.hidden = false; }
+  if (url && url.charAt(0) === '#') { el.href = url; el.removeAttribute('target'); el.style.opacity = ''; el.style.cursor = ''; }
+  else if (url) { el.href = url; el.target = '_blank'; el.rel = 'noopener'; el.hidden = false; el.style.opacity = ''; el.style.cursor = ''; }
   else { el.removeAttribute('href'); el.style.opacity = '.55'; el.style.cursor = 'default'; }
 }
 function render(c){
+  if (typeof order !== 'undefined') order.c = c;
   document.documentElement.style.setProperty('--accent', c.accent || '#15489E');
   document.querySelectorAll('[data-bind]').forEach(function(el){
     var v = get(c, el.getAttribute('data-bind'));
@@ -461,6 +577,7 @@ function render(c){
     cover.textContent = ''; cover.style.border = 'none';
     var img = new Image(); img.src = c.album.coverImage; img.alt = (c.album.title || '') + ' 자켓'; cover.appendChild(img);
   }
+  if (typeof order !== 'undefined') renderOrder();
   var links = document.getElementById('links'); links.textContent = '';
   [['유튜브', c.links.youtube], ['인스타그램', c.links.instagram]].forEach(function(l){
     if (!l[1]) return; var a = document.createElement('a'); a.href = l[1]; a.target = '_blank'; a.rel = 'noopener'; a.textContent = l[0]; links.appendChild(a);
@@ -468,6 +585,101 @@ function render(c){
   if (c.links.email) { var s = document.createElement('a'); s.href = 'mailto:' + c.links.email; s.textContent = c.links.email; links.appendChild(s); }
 }
 render(DEFAULT);
+
+// ── 주문서 (계좌이체) ─────────────────────────────────────────────
+// 주문은 홈페이지(heebonyang) Firestore의 orders 컬렉션에 저장되고, 홈페이지 관리자 '0집 주문'에서 확인해요.
+// 남은 수량도 홈페이지 관리자 '0집 CD'에서 정한 숫자를 그대로 읽어 와요.
+var FS = 'https://firestore.googleapis.com/v1/projects/heebonyang/databases/(default)/documents';
+var order = { c: DEFAULT, qty: 1, stock: null, busy: false };
+function won(n){ return n.toLocaleString('ko-KR') + '원'; }
+function maxQty(){ var m = Number(order.c.order && order.c.order.maxQty) || 10; return order.stock == null ? m : Math.max(1, Math.min(m, order.stock)); }
+function unitPrice(){ return Number(order.c.order && order.c.order.unitPrice) || 10000; }
+function renderOrder(){
+  var o = order.c.order || {};
+  document.getElementById('priceLine').textContent = '1장 ' + won(unitPrice()) + (o.priceNote ? ' (' + o.priceNote + ')' : '');
+  if (order.qty > maxQty()) order.qty = maxQty();
+  document.getElementById('qtyOut').textContent = order.qty;
+  document.getElementById('qtyMinus').disabled = order.qty <= 1;
+  document.getElementById('qtyPlus').disabled = order.qty >= maxQty();
+  document.getElementById('totalOut').textContent = won(order.qty * unitPrice());
+}
+function renderStock(left, total){
+  order.stock = left;
+  document.getElementById('stockBox').hidden = false;
+  document.getElementById('stockTotal').textContent = total;
+  document.getElementById('stockLeft').textContent = Math.max(0, left);
+  document.getElementById('stockBar').style.width = (total > 0 ? Math.max(0, Math.min(1, left / total)) * 100 : 0) + '%';
+  var sold = left <= 0;
+  document.getElementById('soldOut').hidden = !sold;
+  document.getElementById('orderForm').hidden = sold || !document.getElementById('orderDone').hidden;
+  renderOrder();
+}
+fetch(FS + '/settings/site?mask.fieldPaths=albumStock&mask.fieldPaths=albumTotal')
+  .then(function(r){ return r.ok ? r.json() : null; })
+  .then(function(j){
+    if (!j || !j.fields || !j.fields.albumStock) return;
+    renderStock(Number(j.fields.albumStock.integerValue), Number((j.fields.albumTotal || {}).integerValue || 0));
+  }).catch(function(){});
+document.getElementById('qtyMinus').addEventListener('click', function(){ if (order.qty > 1) { order.qty--; renderOrder(); } });
+document.getElementById('qtyPlus').addEventListener('click', function(){ if (order.qty < maxQty()) { order.qty++; renderOrder(); } });
+document.addEventListener('click', function(e){
+  var b = e.target.closest('[data-copy="bank"]'); if (!b) return;
+  var acct = ((order.c.order || {}).bank || '').match(/[0-9][0-9-]{5,}[0-9]/);
+  if (!acct || !navigator.clipboard) return;
+  navigator.clipboard.writeText(acct[0]).then(function(){ var t = b.textContent; b.textContent = '복사했어요'; setTimeout(function(){ b.textContent = t; }, 1500); });
+});
+function orderNo(){
+  var d = new Date(), p = function(n){ return String(n).padStart(2,'0'); };
+  var abc = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789', r = '';
+  var buf = new Uint32Array(5); crypto.getRandomValues(buf);
+  for (var i = 0; i < 5; i++) r += abc[buf[i] % abc.length];
+  return String(d.getFullYear()).slice(2) + p(d.getMonth()+1) + p(d.getDate()) + '-' + r;
+}
+renderOrder();
+function showErr(t){ var e = document.getElementById('orderErr'); e.textContent = t; e.hidden = !t; }
+document.getElementById('orderForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  if (order.busy) return;
+  var v = function(id){ return document.getElementById(id).value.trim(); };
+  var name = v('oName'), phone = v('oPhone').replace(/[\s.]/g, ''), addr = v('oAddr'), dep = v('oDepositor') || name, memo = v('oMemo');
+  var bad = null;
+  if (!name) bad = ['oName', '이름을 적어 주세요.'];
+  else if (!/^[0-9][0-9-]{8,13}$/.test(phone)) bad = ['oPhone', '연락처를 숫자로 적어 주세요. (예: 010-1234-5678)'];
+  else if (addr.length < 5) bad = ['oAddr', '받는 주소를 적어 주세요.'];
+  else if (!document.getElementById('oAgree').checked) bad = ['oAgree', '개인정보 수집·이용에 동의해 주셔야 주문할 수 있어요.'];
+  if (bad) { showErr(bad[1]); document.getElementById(bad[0]).focus(); return; }
+  showErr('');
+  order.busy = true;
+  var btn = document.getElementById('orderSubmit'); btn.disabled = true; btn.textContent = '주문 넣는 중…';
+  var no = orderNo();
+  var from = /[?&]from=shop\b/.test(location.search) ? 'shop' : 'md';
+  var str = function(x){ return { stringValue: x }; };
+  var body = { writes: [{
+    update: { name: 'projects/heebonyang/databases/(default)/documents/orders/' + no, fields: {
+      name: str(name), phone: str(phone), address: str(addr), qty: { integerValue: String(order.qty) },
+      depositor: str(dep), memo: str(memo), source: str(from), status: str('new'), agree: { booleanValue: true }
+    } },
+    updateTransforms: [{ fieldPath: 'createdAt', setToServerValue: 'REQUEST_TIME' }],
+    currentDocument: { exists: false }
+  }] };
+  fetch('https://firestore.googleapis.com/v1/projects/heebonyang/databases/(default)/documents:commit', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body)
+  }).then(function(r){
+    if (r.ok) return;
+    return r.json().catch(function(){ return {}; }).then(function(j){ throw new Error((j.error && j.error.status) || r.status); });
+  }).then(function(){
+    document.getElementById('dNo').textContent = no;
+    document.getElementById('dAmount').textContent = won(order.qty * unitPrice()) + ' (' + order.qty + '장)';
+    document.getElementById('dDepositor').textContent = dep;
+    document.getElementById('orderForm').hidden = true;
+    var done = document.getElementById('orderDone'); done.hidden = false; done.focus();
+    done.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }).catch(function(err){
+    showErr(String(err.message) === 'PERMISSION_DENIED'
+      ? '주문을 넣지 못했어요. 남은 수량보다 많이 주문했거나 입력한 내용에 문제가 있어요. 수량과 연락처를 확인해 주세요.'
+      : '주문을 넣지 못했어요. 인터넷 연결을 확인하고 다시 시도해 주세요.');
+  }).then(function(){ order.busy = false; btn.disabled = false; btn.textContent = '주문하기'; });
+});
 fetch('content.json?t=' + Date.now()).then(function(r){ return r.ok ? r.json() : null; }).then(function(c){ if (c) render(c); }).catch(function(){});
 </script>
 </body>

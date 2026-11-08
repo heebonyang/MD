@@ -78,8 +78,11 @@ var SCHEMA = [
   ['음반', [
     ['album.title','음반 이름'],['album.description','설명','area'],['album.tracklist','수록곡 (한 줄에 한 곡)','area'],
     ['album.hiddenTrack','히든 트랙 문구 (비우면 숨김)'],['album.price','가격'],
-    ['album.buyButton','구매 버튼 글자'],['album.buyUrl','구매 링크','url'],
+    ['album.buyButton','구매 버튼 글자'],['album.buyUrl','구매 링크 (#order 이면 이 페이지의 주문서로 이동)'],
     ['album.coverImage','자켓 이미지 주소','cover']]],
+  ['주문서', [
+    ['order.bank','입금 계좌 (은행 계좌번호 예금주)'],['order.priceNote','가격 옆 안내 (예: 택배비 포함)'],
+    ['order.maxQty','한 번에 주문할 수 있는 최대 수량','number'],['order.notice','입금 후 안내 문구','area']]],
   ['공연', [
     ['concert.headline','제목','area'],['concert.description','설명','area'],
     ['concert.venue','장소'],['concert.time','시간'],['concert.ticket','티켓'],
