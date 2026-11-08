@@ -1,0 +1,36 @@
+# main 에 푸시하면(관리자 페이지에서 저장해도) Firebase Hosting(heebonmd)에 자동 배포
+# 필요한 것: 저장소 Settings > Secrets and variables > Actions 에 FIREBASE_SERVICE_ACCOUNT (서비스 계정 키 JSON 전체)
+# 비밀값이 아직 없으면 배포를 건너뜀
+name: Deploy to Firebase Hosting
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# 배포는 한 번에 하나씩, 들어온 순서대로
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 배포할 수 있는지 확인
+        id: check
+        env:
+          SA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          if [ -z "$SA" ]; then
+            echo "::notice::FIREBASE_SERVICE_ACCOUNT 비밀값이 없어서 배포를 건너뜁니다."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          fi
+      - if: steps.check.outputs.skip != 'true'
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          projectId: heebonmd
+          channelId: live

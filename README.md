@@ -10,6 +10,11 @@
 
 관리자 페이지에서 저장 → GitHub 저장소의 content.json이 바뀜 → GitHub Actions가 Firebase에 자동 배포 → 1~2분 뒤 사이트에 반영
 
+## 자동 배포
+
+`main`에 푸시하면 `.github/workflows/deploy.yml`이 Firebase Hosting(`heebonmd`)에 배포해요.
+저장소 Settings › Secrets and variables › Actions 에 `FIREBASE_SERVICE_ACCOUNT`(서비스 계정 키 JSON 전체)가 있어야 하고, 없으면 배포를 건너뛰어요.
+
 ## 처음 한 번만 하는 설정 (PC에서)
 
 1. Firebase 콘솔(https://console.firebase.google.com)에서 프로젝트 만들기
