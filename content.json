@@ -22,7 +22,7 @@
     "tracklist": "[수록곡 목록]",
     "hiddenTrack": "어디에서도 들을 수 없는 히든 트랙 1곡 수록",
     "price": "[가격]",
-    "buyUrl": "",
+    "buyUrl": "https://heebonyang.web.app/shop",
     "buyButton": "음반 구매하기",
     "coverImage": ""
   },
