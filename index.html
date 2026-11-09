@@ -86,7 +86,10 @@ footer{color:#C9D3EA}
 .links a{color:#DCE5F4;text-decoration:none}
 .links a:hover{text-decoration:underline;text-underline-offset:4px}
 .order{background:#E6EDF7}
-.orderbox{max-width:600px;margin:0 auto;padding-top:64px;padding-bottom:96px}
+.orderbox{max-width:600px;margin:0 auto;padding-top:40px;padding-bottom:96px}
+.order-head{display:flex;justify-content:flex-end;margin-bottom:12px}
+.close{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 16px;border-radius:999px;border:1px solid var(--edge);background:var(--bg);color:var(--sub);font:inherit;font-size:14px;cursor:pointer}
+.close:hover{border-color:var(--accent);color:var(--accent)}
 .stock{margin-top:8px}
 .stock-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;font-size:15px;font-weight:500}
 .stock-top b{font-family:'Gowun Batang',serif;font-size:28px;color:var(--accent);font-weight:700}
@@ -461,6 +464,7 @@ footer{color:#C9D3EA}
 <section id="order" class="order" hidden>
   <div class="wrap">
     <div class="orderbox">
+      <div class="order-head"><button type="button" class="close" id="orderClose" aria-label="주문서 닫기">닫기 <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>
       <form class="form" id="orderForm" novalidate>
         <div class="two">
           <div><label for="oName">이름</label><input type="text" id="oName" autocomplete="name" maxlength="30" required></div>
@@ -666,6 +670,15 @@ fetch(FS + '/settings/site?mask.fieldPaths=albumStock&mask.fieldPaths=albumTotal
   }).catch(function(){});
 document.getElementById('oSign').addEventListener('change', function(){ document.getElementById('signNameBox').hidden = !this.checked; });
 // 음반 구매하기 → 같은 페이지 안에서 주문서를 펼쳐요. (홈페이지에서 #order 로 들어와도 바로 펼침)
+function closeOrder(){
+  document.getElementById('order').hidden = true;
+  if (history.replaceState) history.replaceState(null, '', location.pathname + location.search);
+  var buy = document.getElementById('buyBtn');
+  buy.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  buy.focus({ preventScroll: true });
+}
+document.getElementById('orderClose').addEventListener('click', closeOrder);
+document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && !document.getElementById('order').hidden) closeOrder(); });
 function openOrder(){
   if (!document.getElementById('soldOut').hidden) return;
   var sec = document.getElementById('order');
