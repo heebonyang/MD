@@ -18,11 +18,12 @@ a{color:var(--accent)}
 .wrap{max-width:1120px;margin:0 auto;padding-left:24px;padding-right:24px}
 .pre{white-space:pre-line}
 .kicker{font-size:14px;letter-spacing:.2em;color:var(--accent)}
-header{display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:16px;padding-top:28px;padding-bottom:28px}
-nav{display:flex;flex-wrap:wrap;gap:24px;font-size:15px}
-nav a{color:var(--sub);text-decoration:none;padding:10px 0}
-nav a:hover{color:var(--text)}
-.hero{padding-top:96px;padding-bottom:48px;display:flex;flex-direction:column;gap:28px}
+.top{position:relative;background:#0D1230}
+header{position:absolute;top:0;left:0;right:0;z-index:1;display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:16px;padding-top:20px;padding-bottom:20px}
+nav{display:flex;flex-wrap:wrap;gap:8px 24px;font-size:15px}
+nav a{color:#C9D3EA;text-decoration:none;padding:10px 0}
+nav a:hover{color:#fff}
+.hero{padding-top:80px;padding-bottom:112px;display:flex;flex-direction:column;gap:28px}
 .hero h1{margin:0;font-weight:700;font-size:clamp(64px,12vw,168px);line-height:1.02;letter-spacing:-.02em}
 .hero h1 .acc{color:var(--accent)}
 .lead{margin:0;max-width:560px;font-size:20px;color:var(--sub)}
@@ -50,7 +51,7 @@ section h2{margin:0;font-size:clamp(36px,5vw,56px);line-height:1.2}
 .cover img{width:100%;height:100%;object-fit:cover;display:block}
 .tracks{font-size:15px;color:var(--muted)}
 .hidden-track{font-size:16px;color:var(--accent);font-weight:500}
-.concert{padding-top:120px;padding-bottom:120px;display:flex;flex-direction:column;gap:24px;align-items:flex-start}
+.concert{border-top:1px solid var(--line);padding-top:120px;padding-bottom:120px;display:flex;flex-direction:column;gap:24px;align-items:flex-start}
 .concert h2{font-size:clamp(40px,6vw,72px);line-height:1.15}
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;width:100%;max-width:760px;margin-top:8px}
 .card{border:1px solid var(--line);border-radius:4px;padding:20px 22px}
@@ -106,22 +107,12 @@ footer a{color:var(--bg)}
 </style>
 </head>
 <body>
+<div class="top">
 <header class="wrap">
   <nav aria-label="섹션">
-    <a href="#live">라이브</a><a href="#album">음반</a><a href="#concert">공연</a><a href="https://heebonyang.web.app">홈페이지</a>
+    <a href="#album">음반</a><a href="#live">라이브</a><a href="#concert">공연</a><a href="https://heebonyang.web.app">홈페이지</a>
   </nav>
 </header>
-
-<section class="wrap hero">
-  <div class="kicker" data-bind="hero.kicker"></div>
-  <h1 class="serif"><span data-bind="hero.title"></span><br><span class="acc" data-bind="hero.titleAccent"></span></h1>
-  <p class="lead pre" data-bind="hero.lead"></p>
-  <div class="btns">
-    <a class="btn" id="ytBtn" href="#" data-bind="hero.primaryButton"></a>
-    <a class="btn ghost" href="#album" data-bind="hero.secondaryButton"></a>
-  </div>
-</section>
-
 <div class="bridge"><svg viewBox="0 0 1440 440" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
 <rect x="0" y="0" width="1440" height="440" fill="#0D1230"/>
 <rect x="0" y="208" width="1440" height="232" fill="#0A0E26"/>
@@ -408,19 +399,15 @@ footer a{color:var(--bg)}
 <circle cx="1438" cy="200" r="1.4"/>
 </g>
 </svg></div>
+</div>
 
-<section id="live" class="wrap grid2 live">
-  <div class="col">
-    <div class="kicker">DAILY LIVE</div>
-    <h2 class="serif pre" data-bind="live.headline"></h2>
-    <p class="desc" data-bind="live.description"></p>
-  </div>
-  <div class="rows">
-    <div class="row"><span>첫 라이브</span><span id="startText"></span></div>
-    <div class="row"><span id="lastLabel">100일째</span><span id="lastText"></span></div>
-    <div class="row"><span>방송 시간</span><span data-bind="live.time"></span></div>
-    <div class="row"><span>어디서</span><span data-bind="live.place"></span></div>
-    <div class="count"><span id="countLabel"></span><b id="countValue"></b></div>
+<section class="wrap hero">
+  <div class="kicker" data-bind="hero.kicker"></div>
+  <h1 class="serif"><span data-bind="hero.title"></span><br><span class="acc" data-bind="hero.titleAccent"></span></h1>
+  <p class="lead pre" data-bind="hero.lead"></p>
+  <div class="btns">
+    <a class="btn" id="ytBtn" href="#" data-bind="hero.primaryButton"></a>
+    <a class="btn ghost" href="#album" data-bind="hero.secondaryButton"></a>
   </div>
 </section>
 
@@ -510,6 +497,21 @@ footer a{color:var(--bg)}
         <p style="font-size:14px;color:var(--muted)">이 화면을 캡처해 두시면 편해요. 문의할 때 주문번호를 알려 주세요.</p>
       </div>
     </div>
+  </div>
+</section>
+
+<section id="live" class="wrap grid2 live">
+  <div class="col">
+    <div class="kicker">DAY 100 LIVE</div>
+    <h2 class="serif pre" data-bind="live.headline"></h2>
+    <p class="desc" data-bind="live.description"></p>
+  </div>
+  <div class="rows">
+    <div class="row"><span>첫 라이브</span><span id="startText"></span></div>
+    <div class="row"><span id="lastLabel">100일째</span><span id="lastText"></span></div>
+    <div class="row"><span>방송 시간</span><span data-bind="live.time"></span></div>
+    <div class="row"><span>어디서</span><span data-bind="live.place"></span></div>
+    <div class="count"><span id="countLabel"></span><b id="countValue"></b></div>
   </div>
 </section>
 
