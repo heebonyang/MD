@@ -27,7 +27,7 @@
     "price": "10,000원 · 택배비 포함",
     "buyUrl": "#order",
     "buyButton": "음반 구매하기",
-    "coverImage": ""
+    "coverImage": "images/album0.jpg"
   },
   "concert": {
     "headline": "2027. 03. 27 토요일\n부산에서.",
