@@ -68,10 +68,6 @@ footer a{color:var(--bg)}
 .stock-top small{color:var(--muted);font-size:14px}
 .meter{height:6px;border-radius:999px;background:var(--line);margin-top:10px;overflow:hidden}
 .meter i{display:block;height:100%;background:var(--accent);border-radius:999px}
-.steps{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:14px;font-size:16px;color:var(--sub)}
-.steps li{display:flex;gap:12px}
-.steps li>span:first-child{flex:none;width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--bg);display:grid;place-items:center;font-size:13px;font-weight:700;margin-top:1px}
-.bank{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding:14px 18px;border-radius:4px;background:var(--bg);border:1px solid var(--line);font-weight:500;color:var(--text)}
 .linkbtn{background:none;border:0;padding:0;font:inherit;font-size:14px;color:var(--accent);text-decoration:underline;text-underline-offset:4px;cursor:pointer}
 .form{display:flex;flex-direction:column;gap:18px;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:28px}
 .form label{display:block;font-size:14px;color:var(--sub);margin-bottom:6px;font-weight:500}
@@ -449,12 +445,6 @@ footer a{color:var(--bg)}
         <div class="stock-top"><span>한정판 <span id="stockTotal"></span>장</span><span><b id="stockLeft"></b> <small>장 남음</small></span></div>
         <div class="meter" aria-hidden="true"><i id="stockBar"></i></div>
       </div>
-      <ol class="steps">
-        <li><span>1</span><span>주문서를 작성해 주세요.</span></li>
-        <li><span>2</span><span>안내되는 금액을 아래 계좌로 입금해 주세요. <span id="priceLine"></span></span></li>
-        <li><span>3</span><span data-bind="order.notice"></span></li>
-      </ol>
-      <div class="bank"><span data-bind="order.bank"></span><button type="button" class="linkbtn" data-copy="bank">계좌번호 복사</button></div>
     </div>
 
     <div>
@@ -477,7 +467,7 @@ footer a{color:var(--bg)}
           <div><label for="oDepositor">입금자명 <small>주문자와 다를 때만</small></label><input type="text" id="oDepositor" maxlength="30"></div>
         </div>
         <div><label for="oMemo">요청사항 <small>선택</small></label><textarea id="oMemo" maxlength="300"></textarea></div>
-        <div class="total"><span>입금하실 금액</span><b id="totalOut"></b></div>
+        <div class="total"><span>입금하실 금액 <small id="priceNote"></small></span><b id="totalOut"></b></div>
         <div class="agree">
           <input type="checkbox" id="oAgree" required>
           <div>
@@ -533,7 +523,7 @@ footer a{color:var(--bg)}
 </footer>
 
 <script>
-var DEFAULT = {"accent": "#15489E", "hero": {"kicker": "SINGER-SONGWRITER · 부산 광안리", "title": "양희본", "titleAccent": "0집", "lead": "발라드와 모던록, 포크 사이 어딘가.\n조용히, 끝까지 들어야 하는 노래들.", "primaryButton": "유튜브 채널 구독", "secondaryButton": "0집 음반 보기"}, "live": {"headline": "100일 동안,\n매일 한 시간.", "description": "12월 14일부터 100일 동안, 부산 광안리에서 하루도 빠짐없이 유튜브 세로 라이브로 노래합니다. 0집의 노래들, 그리고 그 사이의 이야기들.", "startDate": "2026-12-14", "days": 100, "time": "매일 [방송 시간]", "place": "부산 광안리 · 유튜브 양희본"}, "album": {"title": "양희본 0집", "description": "첫 번째보다 앞에 있는 음반. 손으로 만지고, 처음부터 끝까지 들을 수 있는 실물 음반으로 만나보세요.", "tracklist": "[수록곡 목록]", "hiddenTrack": "어디에서도 들을 수 없는 히든 트랙 1곡 수록", "price": "10,000원 · 택배비 포함", "buyUrl": "#order", "buyButton": "음반 구매하기", "coverImage": ""}, "order": {"unitPrice": 10000, "priceNote": "택배비 포함", "maxQty": 10, "bank": "신한은행 957-06-111158 양희본", "notice": "입금이 확인되면 최대한 빨리 보내드려요."}, "concert": {"headline": "2027. 03. 27 토요일\n부산에서.", "description": "100일의 라이브가 끝나고 나흘 뒤, 무대에서 직접 부릅니다.", "venue": "[공연장]", "time": "[공연 시간]", "ticket": "[티켓 가격]", "ticketUrl": "", "ticketButton": "예매 알림 받기"}, "links": {"youtube": "", "instagram": "", "email": ""}};
+var DEFAULT = {"accent": "#15489E", "hero": {"kicker": "SINGER-SONGWRITER · 부산 광안리", "title": "양희본", "titleAccent": "0집", "lead": "발라드와 모던록, 포크 사이 어딘가.\n조용히, 끝까지 들어야 하는 노래들.", "primaryButton": "유튜브 채널 구독", "secondaryButton": "0집 음반 보기"}, "live": {"headline": "100일 동안,\n매일 한 시간.", "description": "12월 14일부터 100일 동안, 부산 광안리에서 하루도 빠짐없이 유튜브 세로 라이브로 노래합니다. 0집의 노래들, 그리고 그 사이의 이야기들.", "startDate": "2026-12-14", "days": 100, "time": "매일 [방송 시간]", "place": "부산 광안리 · 유튜브 양희본"}, "album": {"title": "양희본 0집", "description": "첫 번째보다 앞에 있는 음반. 손으로 만지고, 처음부터 끝까지 들을 수 있는 실물 음반으로 만나보세요.", "tracklist": "[수록곡 목록]", "hiddenTrack": "어디에서도 들을 수 없는 히든 트랙 1곡 수록", "price": "10,000원 · 택배비 포함", "buyUrl": "#order", "buyButton": "음반 구매하기", "coverImage": ""}, "order": {"unitPrice": 10000, "priceNote": "택배비 포함", "maxQty": 10, "bank": "신한은행 957-06-111158 양희본"}, "concert": {"headline": "2027. 03. 27 토요일\n부산에서.", "description": "100일의 라이브가 끝나고 나흘 뒤, 무대에서 직접 부릅니다.", "venue": "[공연장]", "time": "[공연 시간]", "ticket": "[티켓 가격]", "ticketUrl": "", "ticketButton": "예매 알림 받기"}, "links": {"youtube": "", "instagram": "", "email": ""}};
 function get(o, path){ return path.split('.').reduce(function(a,k){ return a == null ? a : a[k]; }, o); }
 function fmt(d){
   var w = ['일','월','화','수','목','금','토'][d.getDay()];
@@ -596,7 +586,7 @@ function maxQty(){ var m = Number(order.c.order && order.c.order.maxQty) || 10; 
 function unitPrice(){ return Number(order.c.order && order.c.order.unitPrice) || 10000; }
 function renderOrder(){
   var o = order.c.order || {};
-  document.getElementById('priceLine').textContent = '1장 ' + won(unitPrice()) + (o.priceNote ? ' (' + o.priceNote + ')' : '');
+  document.getElementById('priceNote').textContent = o.priceNote ? '(' + o.priceNote + ')' : '';
   if (order.qty > maxQty()) order.qty = maxQty();
   document.getElementById('qtyOut').textContent = order.qty;
   document.getElementById('qtyMinus').disabled = order.qty <= 1;
