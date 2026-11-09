@@ -20,10 +20,6 @@ a{color:var(--accent)}
 .pre{white-space:pre-line}
 .kicker{font-size:14px;letter-spacing:.2em;color:var(--accent)}
 .top{position:relative;background:#0D1230}
-header{position:absolute;top:0;left:0;right:0;z-index:1;display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:16px;padding-top:20px;padding-bottom:20px}
-nav{display:flex;flex-wrap:wrap;gap:8px 24px;font-size:15px}
-nav a{color:#C9D3EA;text-decoration:none;padding:10px 0}
-nav a:hover{color:#fff}
 .album h1{margin:0;font-weight:700;font-size:clamp(52px,7vw,96px);line-height:1.05;letter-spacing:-.02em}
 .album h1 .acc{color:var(--accent)}
 .lead{margin:0;font-size:19px;color:var(--text)}
@@ -74,9 +70,21 @@ section h2{margin:0;font-size:clamp(36px,5vw,56px);line-height:1.2}
 .band-live{--line:rgba(21,72,158,.22);--sub:#2E3A55;--muted:#45506B}
 .band-concert{--accent:#FEF7ED;--text:#FEF7ED;--sub:#DCE5F4;--muted:#BCCBE8;--line:rgba(254,247,237,.35);color:var(--text)}
 .band-concert .btn.outline:hover{background:rgba(254,247,237,.12)}
-footer .wrap{padding-top:44px;padding-bottom:48px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;font-size:14px;color:#C9D3EA}
-footer a{color:#FEF7ED}
-.links{display:flex;flex-wrap:wrap;gap:6px 16px}
+footer{color:#C9D3EA}
+.foot{padding-top:24px;padding-bottom:40px;display:flex;flex-direction:column;gap:40px}
+.foot-lights{height:4px;background-image:radial-gradient(circle,rgba(254,247,237,.75) 1.3px,transparent 1.8px);background-size:22px 4px;background-position:center;opacity:.55}
+.home{display:flex;align-items:center;justify-content:space-between;gap:24px;color:#FEF7ED;text-decoration:none}
+.home-text{display:flex;flex-direction:column;gap:6px;min-width:0}
+.home-k{font-size:13px;letter-spacing:.24em;color:#8EC3FF}
+.home-t{font-family:'Gowun Batang',serif;font-weight:700;font-size:clamp(32px,5vw,56px);line-height:1.2;letter-spacing:-.01em;background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;transition:background-size .4s ease;width:fit-content}
+.home-s{font-size:15px;color:#AEB7D6}
+.home-arrow{flex:none;width:64px;height:64px;border-radius:50%;border:1px solid rgba(254,247,237,.5);display:grid;place-items:center;transition:background .3s ease,color .3s ease,transform .3s ease}
+.home:hover .home-t,.home:focus-visible .home-t{background-size:100% 1px}
+.home:hover .home-arrow,.home:focus-visible .home-arrow{background:#FEF7ED;color:#0D1230;transform:translateX(4px)}
+.foot-bottom{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 24px;font-size:13px;color:#8F9AC0}
+.links{display:flex;flex-wrap:wrap;gap:6px 18px}
+.links a{color:#DCE5F4;text-decoration:none}
+.links a:hover{text-decoration:underline;text-underline-offset:4px}
 .order{background:#E6EDF7}
 .orderbox{max-width:600px;margin:0 auto;padding-top:64px;padding-bottom:96px}
 .stock{margin-top:8px}
@@ -125,11 +133,6 @@ footer a{color:#FEF7ED}
 </head>
 <body>
 <div class="top">
-<header class="wrap">
-  <nav aria-label="섹션">
-    <a href="#album">음반</a><a href="#live">라이브</a><a href="#concert">공연</a><a href="https://heebonyang.web.app">홈페이지</a>
-  </nav>
-</header>
 <div class="bridge"><svg viewBox="0 0 1440 440" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
 <rect x="0" y="0" width="1440" height="440" fill="#0D1230"/>
 <rect x="0" y="208" width="1440" height="232" fill="#0A0E26"/>
@@ -550,9 +553,20 @@ footer a{color:#FEF7ED}
 </section>
 
 <footer>
-  <div class="wrap">
-    <a href="https://heebonyang.web.app">양희본 홈페이지 →</a>
-    <span class="links" id="links"></span>
+  <div class="wrap foot">
+    <div class="foot-lights" aria-hidden="true"></div>
+    <a class="home" href="https://heebonyang.web.app">
+      <span class="home-text">
+        <span class="home-k">HOME</span>
+        <span class="home-t">양희본 홈페이지</span>
+        <span class="home-s">음악 · 치과 · 라운지, 더 많은 노래와 이야기</span>
+      </span>
+      <span class="home-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    </a>
+    <div class="foot-bottom">
+      <span class="links" id="links"></span>
+      <span class="copy">© 2026 양희본 · Busan, Gwangalli</span>
+    </div>
   </div>
 </footer>
 </div>
