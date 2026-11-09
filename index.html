@@ -90,6 +90,7 @@ footer{color:#C9D3EA}
 .order-head{display:flex;justify-content:flex-end;margin-bottom:12px}
 .close{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 16px;border-radius:999px;border:1px solid var(--edge);background:var(--bg);color:var(--sub);font:inherit;font-size:14px;cursor:pointer}
 .close:hover{border-color:var(--accent);color:var(--accent)}
+.done-close{width:100%;justify-content:center;border:0;cursor:pointer;font-family:inherit;margin-top:4px}
 .stock{margin-top:8px}
 .stock-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;font-size:15px;font-weight:500}
 .stock-top b{font-family:'Gowun Batang',serif;font-size:28px;color:var(--accent);font-weight:700}
@@ -519,6 +520,7 @@ footer{color:#C9D3EA}
           <dt>입금 계좌</dt><dd><span data-bind="order.bank"></span> <button type="button" class="linkbtn" data-copy="bank">복사</button></dd>
         </dl>
         <p style="font-size:14px;color:var(--muted)">이 화면을 캡처해 두시면 편해요. 문의할 때 주문번호를 알려 주세요.</p>
+        <button type="button" class="btn done-close" id="doneClose">확인했어요, 닫기</button>
       </div>
     </div>
   </div>
@@ -672,12 +674,21 @@ document.getElementById('oSign').addEventListener('change', function(){ document
 // 음반 구매하기 → 같은 페이지 안에서 주문서를 펼쳐요. (홈페이지에서 #order 로 들어와도 바로 펼침)
 function closeOrder(){
   document.getElementById('order').hidden = true;
+  // 주문을 마친 뒤 닫으면, 다음에 열 때는 새 주문서가 나오도록 비워 둠
+  if (!document.getElementById('orderDone').hidden) {
+    document.getElementById('orderDone').hidden = true;
+    document.getElementById('orderForm').reset();
+    document.getElementById('signNameBox').hidden = true;
+    order.qty = 1; renderOrder();
+    document.getElementById('orderForm').hidden = false;
+  }
   if (history.replaceState) history.replaceState(null, '', location.pathname + location.search);
   var buy = document.getElementById('buyBtn');
   buy.scrollIntoView({ behavior: 'smooth', block: 'center' });
   buy.focus({ preventScroll: true });
 }
 document.getElementById('orderClose').addEventListener('click', closeOrder);
+document.getElementById('doneClose').addEventListener('click', closeOrder);
 document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && !document.getElementById('order').hidden) closeOrder(); });
 function openOrder(){
   if (!document.getElementById('soldOut').hidden) return;
