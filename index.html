@@ -87,10 +87,12 @@ footer{color:#C9D3EA}
 .links a:hover{text-decoration:underline;text-underline-offset:4px}
 .order{background:#E6EDF7}
 .orderbox{max-width:600px;margin:0 auto;padding-top:40px;padding-bottom:96px}
-.order-head{display:flex;justify-content:flex-end;margin-bottom:12px}
-.close{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 16px;border-radius:999px;border:1px solid var(--edge);background:var(--bg);color:var(--sub);font:inherit;font-size:14px;cursor:pointer}
-.close:hover{border-color:var(--accent);color:var(--accent)}
-.done-close{width:100%;justify-content:center;border:0;cursor:pointer;font-family:inherit;margin-top:4px}
+/* 주문하기·닫기 버튼: 같은 크기의 둥근 버튼, 닫기는 테두리만 */
+.actions{display:flex;flex-direction:column;gap:10px;margin-top:4px}
+.actions .btn{width:100%;justify-content:center;cursor:pointer;font-family:inherit}
+.form .actions .btn[type=submit]{border:0}
+.actions .btn.ghost-close{background:transparent;border:1px solid var(--edge);color:var(--sub);font-weight:500}
+.actions .btn.ghost-close:hover{border-color:var(--accent);color:var(--accent)}
 .stock{margin-top:8px}
 .stock-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;font-size:15px;font-weight:500}
 .stock-top b{font-family:'Gowun Batang',serif;font-size:28px;color:var(--accent);font-weight:700}
@@ -465,7 +467,6 @@ footer{color:#C9D3EA}
 <section id="order" class="order" hidden>
   <div class="wrap">
     <div class="orderbox">
-      <div class="order-head"><button type="button" class="close" id="orderClose" aria-label="주문서 닫기">닫기 <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>
       <form class="form" id="orderForm" novalidate>
         <div class="two">
           <div><label for="oName">이름</label><input type="text" id="oName" autocomplete="name" maxlength="30" required></div>
@@ -505,7 +506,10 @@ footer{color:#C9D3EA}
           </div>
         </div>
         <p class="err" id="orderErr" role="alert" hidden></p>
-        <button type="submit" class="btn" id="orderSubmit">주문하기</button>
+        <div class="actions">
+          <button type="submit" class="btn" id="orderSubmit">주문하기</button>
+          <button type="button" class="btn ghost-close" id="orderClose">닫기</button>
+        </div>
       </form>
 
       <div class="done" id="orderDone" hidden tabindex="-1">
@@ -520,7 +524,9 @@ footer{color:#C9D3EA}
           <dt>입금 계좌</dt><dd><span data-bind="order.bank"></span> <button type="button" class="linkbtn" data-copy="bank">복사</button></dd>
         </dl>
         <p style="font-size:14px;color:var(--muted)">이 화면을 캡처해 두시면 편해요. 문의할 때 주문번호를 알려 주세요.</p>
-        <button type="button" class="btn done-close" id="doneClose">확인했어요, 닫기</button>
+        <div class="actions">
+          <button type="button" class="btn ghost-close" id="doneClose">닫기</button>
+        </div>
       </div>
     </div>
   </div>
