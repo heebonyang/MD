@@ -88,6 +88,11 @@ footer a{color:var(--bg)}
 .agree details{margin-top:4px;font-size:13px;color:var(--muted)}
 .agree summary{cursor:pointer;color:var(--sub)}
 .agree ul{margin:8px 0 0;padding-left:18px}
+.sign{border:1px solid var(--edge);border-radius:4px;background:#fff;padding:16px 18px;display:flex;flex-direction:column;gap:12px}
+.sign .opt{display:flex;gap:12px;align-items:flex-start;cursor:pointer;margin:0;font-weight:400}
+.sign .opt input{width:20px;height:20px;margin:3px 0 0;accent-color:var(--accent);flex:none}
+.sign .opt b{display:block;font-size:16px;color:var(--text);font-weight:500}
+.sign .opt span span{display:block;font-size:14px;color:var(--muted)}
 .form .btn{width:100%;justify-content:center;border:0;cursor:pointer;font-family:inherit}
 .form .btn:disabled{opacity:.5;cursor:default}
 .err{margin:0;color:#B3261E;font-size:15px}
@@ -466,6 +471,10 @@ footer a{color:var(--bg)}
           </div>
           <div><label for="oDepositor">입금자명 <small>주문자와 다를 때만</small></label><input type="text" id="oDepositor" maxlength="30"></div>
         </div>
+        <div class="sign">
+          <label class="opt"><input type="checkbox" id="oSign"><span><b>비닐 뜯고 싸인해서 보내 주세요</b><span>원하시면 비닐을 뜯고 자켓에 직접 싸인해 드려요. (무료)</span></span></label>
+          <div id="signNameBox" hidden><label for="oSignName">싸인에 넣을 이름 <small>선택 · 비워 두면 싸인만 해 드려요</small></label><input type="text" id="oSignName" maxlength="20"></div>
+        </div>
         <div><label for="oMemo">요청사항 <small>선택</small></label><textarea id="oMemo" maxlength="300"></textarea></div>
         <div class="total"><span>입금하실 금액 <small id="priceNote"></small></span><b id="totalOut"></b></div>
         <div class="agree">
@@ -495,6 +504,7 @@ footer a{color:var(--bg)}
           <dt>주문번호</dt><dd id="dNo"></dd>
           <dt>입금 금액</dt><dd id="dAmount"></dd>
           <dt>입금자명</dt><dd id="dDepositor"></dd>
+          <dt class="dSign" hidden>싸인</dt><dd class="dSign" id="dSign" hidden></dd>
           <dt>입금 계좌</dt><dd><span data-bind="order.bank"></span> <button type="button" class="linkbtn" data-copy="bank">복사</button></dd>
         </dl>
         <p style="font-size:14px;color:var(--muted)">이 화면을 캡처해 두시면 편해요. 문의할 때 주문번호를 알려 주세요.</p>
@@ -610,6 +620,7 @@ fetch(FS + '/settings/site?mask.fieldPaths=albumStock&mask.fieldPaths=albumTotal
     if (!j || !j.fields || !j.fields.albumStock) return;
     renderStock(Number(j.fields.albumStock.integerValue), Number((j.fields.albumTotal || {}).integerValue || 0));
   }).catch(function(){});
+document.getElementById('oSign').addEventListener('change', function(){ document.getElementById('signNameBox').hidden = !this.checked; });
 document.getElementById('qtyMinus').addEventListener('click', function(){ if (order.qty > 1) { order.qty--; renderOrder(); } });
 document.getElementById('qtyPlus').addEventListener('click', function(){ if (order.qty < maxQty()) { order.qty++; renderOrder(); } });
 document.addEventListener('click', function(e){
@@ -631,6 +642,7 @@ document.getElementById('orderForm').addEventListener('submit', function(e){
   e.preventDefault();
   if (order.busy) return;
   var v = function(id){ return document.getElementById(id).value.trim(); };
+  var sign = document.getElementById('oSign').checked, signName = v('oSignName');
   var name = v('oName'), phone = v('oPhone').replace(/[\s.]/g, ''), addr = v('oAddr'), dep = v('oDepositor') || name, memo = v('oMemo');
   var bad = null;
   if (!name) bad = ['oName', '이름을 적어 주세요.'];
@@ -642,6 +654,11 @@ document.getElementById('orderForm').addEventListener('submit', function(e){
   order.busy = true;
   var btn = document.getElementById('orderSubmit'); btn.disabled = true; btn.textContent = '주문 넣는 중…';
   var no = orderNo();
+  // 싸인 요청은 관리자 '0집 주문'에서 바로 보이도록 요청사항 맨 앞에 붙여 저장해요.
+  if (sign) {
+    var tag = '[싸인 요청' + (signName ? ' · 이름: ' + signName : '') + ']';
+    memo = (tag + (memo ? '\n' + memo : '')).slice(0, 300);
+  }
   var from = /[?&]from=shop\b/.test(location.search) ? 'shop' : 'md';
   var str = function(x){ return { stringValue: x }; };
   var body = { writes: [{
@@ -661,6 +678,8 @@ document.getElementById('orderForm').addEventListener('submit', function(e){
     document.getElementById('dNo').textContent = no;
     document.getElementById('dAmount').textContent = won(order.qty * unitPrice()) + ' (' + order.qty + '장)';
     document.getElementById('dDepositor').textContent = dep;
+    document.getElementById('dSign').textContent = sign ? '비닐 뜯고 싸인해서 보내 드려요' + (signName ? ' (' + signName + ' 님께)' : '') : '';
+    document.querySelectorAll('.dSign').forEach(function(el){ el.hidden = !sign; });
     document.getElementById('orderForm').hidden = true;
     var done = document.getElementById('orderDone'); done.hidden = false; done.focus();
     done.scrollIntoView({ behavior: 'smooth', block: 'start' });
