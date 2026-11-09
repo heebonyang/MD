@@ -88,6 +88,11 @@ footer{color:#C9D3EA}
 .order{background:#E6EDF7}
 #order:focus{outline:none}
 .orderbox{max-width:600px;margin:0 auto;padding-top:40px;padding-bottom:96px}
+.orderhead{display:flex;align-items:center;gap:16px;margin-bottom:20px}
+.orderhead img{width:64px;height:64px;border-radius:4px;object-fit:cover;flex:none;background:#000}
+.orderhead h2{margin:2px 0 0;font-size:26px;line-height:1.25;color:var(--text)}
+.orderhead .acc{color:var(--accent)}
+.orderhead-price{font-size:15px;color:var(--muted)}
 /* 주문하기·닫기 버튼: 같은 크기의 둥근 버튼, 닫기는 테두리만 */
 .actions{display:flex;flex-direction:column;gap:10px;margin-top:4px}
 .actions .btn{width:100%;justify-content:center;cursor:pointer;font-family:inherit}
@@ -468,6 +473,15 @@ footer{color:#C9D3EA}
 <section id="order" class="order" tabindex="-1" aria-label="주문서" hidden>
   <div class="wrap">
     <div class="orderbox">
+      <!-- 무엇을 주문하는지 한눈에 (홈페이지에서 주문서로 바로 들어와도 알 수 있게) -->
+      <div class="orderhead">
+        <img src="images/album0.jpg" alt="" width="64" height="64">
+        <div>
+          <div class="kicker">ORDER</div>
+          <h2 class="serif">양희본 <span class="acc">0집</span> 주문서</h2>
+          <div class="orderhead-price" data-bind="album.price"></div>
+        </div>
+      </div>
       <form class="form" id="orderForm" novalidate>
         <div class="two">
           <div><label for="oName">이름</label><input type="text" id="oName" autocomplete="name" maxlength="30" required></div>
