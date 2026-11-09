@@ -1,7 +1,12 @@
 {
   "accent": "#15489E",
+  "harbor": {
+    "kicker": "DEPARTURE · 35°09′N 129°07′E",
+    "title": "부산 광안리에서,\n첫 항해를 시작합니다.",
+    "sub": "0집도, 100일의 라이브도, 첫 공연도.\n모두 이 바다에서 출발해요."
+  },
   "hero": {
-    "kicker": "SINGER-SONGWRITER · 부산 광안리",
+    "kicker": "SINGER-SONGWRITER",
     "title": "양희본",
     "titleAccent": "0집",
     "lead": "발라드와 모던록, 포크 사이 어딘가.\n조용히, 끝까지 들어야 하는 노래들."
