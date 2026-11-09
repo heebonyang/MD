@@ -53,6 +53,7 @@ section h2{margin:0;font-size:clamp(36px,5vw,56px);line-height:1.2}
 .count{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding-top:28px;flex-wrap:wrap}
 .count span:first-child{color:var(--muted)}
 .count b{font-family:'Gowun Batang',serif;font-size:48px;color:var(--accent)}
+.album{background:linear-gradient(to bottom,#FEF7ED 0,#FEF7ED 65%,#E6EDF7 100%)}
 .album .grid2{padding-top:72px;padding-bottom:112px;align-items:center}
 .album .col{gap:18px}
 .buy{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;margin-top:12px;padding-top:24px;border-top:1px solid var(--line)}
@@ -61,21 +62,22 @@ section h2{margin:0;font-size:clamp(36px,5vw,56px);line-height:1.2}
 .cover img{width:100%;height:100%;object-fit:cover;display:block}
 .tracks{font-size:15px;color:var(--muted)}
 .hidden-track{font-size:16px;color:var(--accent);font-weight:500}
-.concert{padding-top:120px;padding-bottom:120px;display:flex;flex-direction:column;gap:24px;align-items:flex-start}
+.concert{padding-top:168px;padding-bottom:120px;display:flex;flex-direction:column;gap:24px;align-items:flex-start}
 .concert h2{font-size:clamp(34px,6vw,72px);line-height:1.15}
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;width:100%;max-width:760px;margin-top:8px}
 .card{border:1px solid var(--line);border-radius:4px;padding:20px 22px}
 .card div:first-child{font-size:13px;color:var(--muted)}
 .card div:last-child{font-size:17px;font-weight:500}
-/* 음반(크림) → 라이브(옅은 파랑) → 공연(파랑) → 홈페이지(깊은 밤바다)로 갈수록 진해지는 파랑 */
-.band-live{background:linear-gradient(to bottom,#E6EDF7,#C9D8EE);border-top:1px solid rgba(21,72,158,.22);--line:rgba(21,72,158,.22);--sub:#2E3A55;--muted:#45506B}
-.band-concert{background:linear-gradient(to bottom,#2F60AE,#15489E);border-top:2px solid #FEF7ED;--accent:#FEF7ED;--text:#FEF7ED;--sub:#DCE5F4;--muted:#BCCBE8;--line:rgba(254,247,237,.35);color:var(--text)}
+/* 음반(크림) → 라이브(옅은 파랑) → 공연(파랑) → 홈페이지(깊은 밤바다)로 끊김 없이 이어지며 진해지는 파랑
+   (각 구역의 끝 색 = 다음 구역의 시작 색) */
+.band-live{background:linear-gradient(to bottom,#E6EDF7,#B3C7E7);--line:rgba(21,72,158,.22);--sub:#2E3A55;--muted:#45506B}
+.band-concert{background:linear-gradient(to bottom,#B3C7E7 0,#7E9DD0 70px,#3D6BB5 150px,#15489E 100%);--accent:#FEF7ED;--text:#FEF7ED;--sub:#DCE5F4;--muted:#BCCBE8;--line:rgba(254,247,237,.35);color:var(--text)}
 .band-concert .btn.outline:hover{background:rgba(254,247,237,.12)}
-footer{background:linear-gradient(to bottom,#112A63,#0D1230);border-top:2px solid #FEF7ED}
+footer{background:linear-gradient(to bottom,#15489E,#0D1230)}
 footer .wrap{padding-top:44px;padding-bottom:48px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;font-size:14px;color:#C9D3EA}
 footer a{color:#FEF7ED}
 .links{display:flex;flex-wrap:wrap;gap:6px 16px}
-.order{background:var(--bg2);border-top:1px solid var(--line)}
+.order{background:#E6EDF7}
 .orderbox{max-width:600px;margin:0 auto;padding-top:64px;padding-bottom:96px}
 .stock{margin-top:8px}
 .stock-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;font-size:15px;font-weight:500}
