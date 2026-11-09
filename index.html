@@ -86,6 +86,7 @@ footer{color:#C9D3EA}
 .links a{color:#DCE5F4;text-decoration:none}
 .links a:hover{text-decoration:underline;text-underline-offset:4px}
 .order{background:#E6EDF7}
+#order:focus{outline:none}
 .orderbox{max-width:600px;margin:0 auto;padding-top:40px;padding-bottom:96px}
 /* 주문하기·닫기 버튼: 같은 크기의 둥근 버튼, 닫기는 테두리만 */
 .actions{display:flex;flex-direction:column;gap:10px;margin-top:4px}
@@ -464,7 +465,7 @@ footer{color:#C9D3EA}
   </div>
 </section>
 
-<section id="order" class="order" hidden>
+<section id="order" class="order" tabindex="-1" aria-label="주문서" hidden>
   <div class="wrap">
     <div class="orderbox">
       <form class="form" id="orderForm" novalidate>
@@ -701,7 +702,8 @@ function openOrder(){
   var sec = document.getElementById('order');
   sec.hidden = false;
   sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  setTimeout(function(){ document.getElementById('oName').focus({ preventScroll: true }); }, 400);
+  // 입력 칸에 바로 커서를 두면 휴대폰 키보드가 저절로 올라와서, 주문서 영역에만 초점을 둠 (칸을 눌러야 입력 시작)
+  sec.focus({ preventScroll: true });
 }
 document.getElementById('buyBtn').addEventListener('click', function(e){
   var h = this.getAttribute('href') || '';
