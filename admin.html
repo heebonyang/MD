@@ -68,18 +68,16 @@ a{color:var(--accent)}
 <script>
 var SCHEMA = [
   ['기본', [['accent','포인트 색','color']]],
-  ['첫 화면', [
+  ['0집 (맨 위)', [
     ['hero.kicker','작은 문구'],['hero.title','이름'],['hero.titleAccent','강조 문구 (0집)'],
-    ['hero.lead','소개 문장','area'],['hero.primaryButton','첫 번째 버튼 글자'],['hero.secondaryButton','두 번째 버튼 글자']]],
+    ['hero.lead','소개 문장','area'],['album.description','설명','area'],['album.tracklist','수록곡 (한 줄에 한 곡)','area'],
+    ['album.hiddenTrack','히든 트랙 문구 (비우면 숨김)'],['album.price','가격'],
+    ['album.buyButton','구매 버튼 글자'],['album.buyUrl','구매 링크 (#order 이면 이 페이지의 주문서로 이동)'],
+    ['album.coverImage','자켓 이미지 주소','cover']]],
   ['100일 라이브', [
     ['live.headline','제목','area'],['live.description','설명','area'],
     ['live.startDate','시작일','date'],['live.days','기간 (일)','number'],
     ['live.time','방송 시간'],['live.place','장소']]],
-  ['음반', [
-    ['album.title','음반 이름'],['album.description','설명','area'],['album.tracklist','수록곡 (한 줄에 한 곡)','area'],
-    ['album.hiddenTrack','히든 트랙 문구 (비우면 숨김)'],['album.price','가격'],
-    ['album.buyButton','구매 버튼 글자'],['album.buyUrl','구매 링크 (#order 이면 이 페이지의 주문서로 이동)'],
-    ['album.coverImage','자켓 이미지 주소','cover']]],
   ['주문서', [
     ['order.bank','입금 계좌 (은행 계좌번호 예금주)'],['order.priceNote','가격 옆 안내 (예: 택배비 포함)'],
     ['order.maxQty','한 번에 주문할 수 있는 최대 수량','number']]],
