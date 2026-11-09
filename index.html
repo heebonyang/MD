@@ -64,8 +64,13 @@ footer a{color:var(--bg)}
 .links{display:flex;flex-wrap:wrap;gap:6px 16px}
 .order{background:var(--bg2);border-top:1px solid var(--line)}
 .orderbox{max-width:600px;margin:0 auto;padding-top:64px;padding-bottom:96px}
-.left{flex-basis:100%;font-size:14px;color:var(--muted)}
-.left b{color:var(--accent);font-weight:700}
+.stock{margin-top:8px}
+.stock-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;font-size:15px;font-weight:500}
+.stock-top b{font-family:'Gowun Batang',serif;font-size:28px;color:var(--accent);font-weight:700}
+.stock-top small{color:var(--muted);font-size:14px;font-weight:400}
+.meter{height:8px;border-radius:999px;background:var(--line);margin-top:8px;overflow:hidden}
+.meter i{display:block;height:100%;width:0;background:var(--accent);border-radius:999px;transition:width .6s ease}
+.stock-note{margin-top:6px;font-size:13px;color:var(--muted)}
 .linkbtn{background:none;border:0;padding:0;font:inherit;font-size:14px;color:var(--accent);text-decoration:underline;text-underline-offset:4px;cursor:pointer}
 .form{display:flex;flex-direction:column;gap:18px;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:28px}
 .form label{display:block;font-size:14px;color:var(--sub);margin-bottom:6px;font-weight:500}
@@ -408,10 +413,14 @@ footer a{color:var(--bg)}
       <p class="desc" data-bind="album.description"></p>
       <div class="tracks pre" data-bind="album.tracklist"></div>
       <div class="hidden-track" data-bind="album.hiddenTrack"></div>
+      <div class="stock" id="stockBox" hidden>
+        <div class="stock-top"><span>한정판 <span id="stockTotal"></span>장</span><span><b id="stockLeft"></b> <small>/ <span id="stockTotal2"></span>장 남음</small></span></div>
+        <div class="meter" role="meter" aria-label="남은 수량" aria-valuemin="0" id="stockMeter"><i id="stockBar"></i></div>
+        <div class="stock-note" id="stockNote"></div>
+      </div>
       <div class="buy">
         <span class="price" data-bind="album.price"></span>
         <a class="btn" id="buyBtn" href="#order" data-bind="album.buyButton"></a>
-        <span class="left" id="stockLine" hidden></span>
       </div>
       <p class="desc" id="soldOut" hidden>준비한 음반이 모두 판매됐어요. 사랑해 주셔서 고맙습니다.</p>
     </div>
@@ -586,9 +595,14 @@ function renderOrder(){
 }
 function renderStock(left, total){
   order.stock = left;
-  var line = document.getElementById('stockLine');
-  line.innerHTML = '한정판 ' + total + '장 · <b>' + Math.max(0, left) + '장</b> 남았어요';
-  line.hidden = false;
+  var n = Math.max(0, Math.min(left, total));
+  document.getElementById('stockTotal').textContent = total;
+  document.getElementById('stockTotal2').textContent = total;
+  document.getElementById('stockLeft').textContent = n;
+  var m = document.getElementById('stockMeter'); m.setAttribute('aria-valuemax', total); m.setAttribute('aria-valuenow', n);
+  document.getElementById('stockNote').textContent = n <= 0 ? '준비한 CD가 모두 판매됐어요.' : (total - n) + '장 판매 · 한정 수량이라 다 팔리면 판매가 끝나요';
+  document.getElementById('stockBox').hidden = false;
+  requestAnimationFrame(function(){ document.getElementById('stockBar').style.width = (total > 0 ? n / total * 100 : 0) + '%'; });
   var sold = left <= 0;
   document.getElementById('soldOut').hidden = !sold;
   document.getElementById('buyBtn').hidden = sold;
