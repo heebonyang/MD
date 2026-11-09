@@ -63,13 +63,9 @@ footer .wrap{padding-top:40px;padding-bottom:40px;display:flex;flex-wrap:wrap;ju
 footer a{color:var(--bg)}
 .links{display:flex;flex-wrap:wrap;gap:6px 16px}
 .order{background:var(--bg2);border-top:1px solid var(--line)}
-.order .grid2{padding-top:96px;padding-bottom:112px;align-items:start}
-.stock{border:1px solid var(--line);border-radius:4px;padding:18px 20px;background:var(--bg)}
-.stock-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
-.stock-top b{font-family:'Gowun Batang',serif;font-size:28px;color:var(--accent)}
-.stock-top small{color:var(--muted);font-size:14px}
-.meter{height:6px;border-radius:999px;background:var(--line);margin-top:10px;overflow:hidden}
-.meter i{display:block;height:100%;background:var(--accent);border-radius:999px}
+.orderbox{max-width:600px;margin:0 auto;padding-top:64px;padding-bottom:96px}
+.left{flex-basis:100%;font-size:14px;color:var(--muted)}
+.left b{color:var(--accent);font-weight:700}
 .linkbtn{background:none;border:0;padding:0;font:inherit;font-size:14px;color:var(--accent);text-decoration:underline;text-underline-offset:4px;cursor:pointer}
 .form{display:flex;flex-direction:column;gap:18px;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:28px}
 .form label{display:block;font-size:14px;color:var(--sub);margin-bottom:6px;font-weight:500}
@@ -415,24 +411,16 @@ footer a{color:var(--bg)}
       <div class="buy">
         <span class="price" data-bind="album.price"></span>
         <a class="btn" id="buyBtn" href="#order" data-bind="album.buyButton"></a>
+        <span class="left" id="stockLine" hidden></span>
       </div>
+      <p class="desc" id="soldOut" hidden>준비한 음반이 모두 판매됐어요. 사랑해 주셔서 고맙습니다.</p>
     </div>
   </div>
 </section>
 
-<section id="order" class="order">
-  <div class="wrap grid2">
-    <div class="col">
-      <div class="kicker">ORDER</div>
-      <h2 class="serif">주문하기</h2>
-      <div class="stock" id="stockBox" hidden>
-        <div class="stock-top"><span>한정판 <span id="stockTotal"></span>장</span><span><b id="stockLeft"></b> <small>장 남음</small></span></div>
-        <div class="meter" aria-hidden="true"><i id="stockBar"></i></div>
-      </div>
-    </div>
-
-    <div>
-      <p class="desc" id="soldOut" hidden>준비한 음반이 모두 판매됐어요. 사랑해 주셔서 고맙습니다.</p>
+<section id="order" class="order" hidden>
+  <div class="wrap">
+    <div class="orderbox">
       <form class="form" id="orderForm" novalidate>
         <div class="two">
           <div><label for="oName">이름</label><input type="text" id="oName" autocomplete="name" maxlength="30" required></div>
@@ -598,12 +586,13 @@ function renderOrder(){
 }
 function renderStock(left, total){
   order.stock = left;
-  document.getElementById('stockBox').hidden = false;
-  document.getElementById('stockTotal').textContent = total;
-  document.getElementById('stockLeft').textContent = Math.max(0, left);
-  document.getElementById('stockBar').style.width = (total > 0 ? Math.max(0, Math.min(1, left / total)) * 100 : 0) + '%';
+  var line = document.getElementById('stockLine');
+  line.innerHTML = '한정판 ' + total + '장 · <b>' + Math.max(0, left) + '장</b> 남았어요';
+  line.hidden = false;
   var sold = left <= 0;
   document.getElementById('soldOut').hidden = !sold;
+  document.getElementById('buyBtn').hidden = sold;
+  if (sold) document.getElementById('order').hidden = true;
   document.getElementById('orderForm').hidden = sold || !document.getElementById('orderDone').hidden;
   renderOrder();
 }
@@ -614,6 +603,19 @@ fetch(FS + '/settings/site?mask.fieldPaths=albumStock&mask.fieldPaths=albumTotal
     renderStock(Number(j.fields.albumStock.integerValue), Number((j.fields.albumTotal || {}).integerValue || 0));
   }).catch(function(){});
 document.getElementById('oSign').addEventListener('change', function(){ document.getElementById('signNameBox').hidden = !this.checked; });
+// 음반 구매하기 → 같은 페이지 안에서 주문서를 펼쳐요. (홈페이지에서 #order 로 들어와도 바로 펼침)
+function openOrder(){
+  if (!document.getElementById('soldOut').hidden) return;
+  var sec = document.getElementById('order');
+  sec.hidden = false;
+  sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  setTimeout(function(){ document.getElementById('oName').focus({ preventScroll: true }); }, 400);
+}
+document.getElementById('buyBtn').addEventListener('click', function(e){
+  var h = this.getAttribute('href') || '';
+  if (h === '#order') { e.preventDefault(); openOrder(); if (history.replaceState) history.replaceState(null, '', '#order'); }
+});
+if (location.hash === '#order') openOrder();
 document.getElementById('qtyMinus').addEventListener('click', function(){ if (order.qty > 1) { order.qty--; renderOrder(); } });
 document.getElementById('qtyPlus').addEventListener('click', function(){ if (order.qty < maxQty()) { order.qty++; renderOrder(); } });
 document.addEventListener('click', function(e){
