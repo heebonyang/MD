@@ -64,9 +64,9 @@ section h2{margin:0;font-size:clamp(36px,5vw,56px);line-height:1.2}
 .card{border:1px solid var(--line);border-radius:4px;padding:20px 22px}
 .card div:first-child{font-size:13px;color:var(--muted)}
 .card div:last-child{font-size:17px;font-weight:500}
-/* 음반(크림) → 라이브(옅은 파랑) → 공연(파랑) → 홈페이지(깊은 밤바다)로 끊김 없이 이어지며 진해지는 파랑
+/* 음반(크림) → 라이브(옅은 파랑) → 공연(파랑) → 홈페이지로 끊김 없이 이어지며 진해지는 파랑. 마지막은 0집 파랑(#15489E)
    (음반 끝 색 = 라이브 시작 색, 라이브~하단은 하나의 그라데이션) */
-.deep{background:linear-gradient(to bottom,#E6EDF7 0,#DDE6F4 10%,#D3DFF1 20%,#C0D1EB 29%,#A9C0E4 36%,#8CA9D8 41%,#6F92CC 46%,#5580C2 50%,#3F6DB7 55%,#2C5DAA 64%,#1E4FA2 75%,#15489E 88%,#112E6E 95%,#0D1230 100%)}
+.deep{background:linear-gradient(to bottom,#E6EDF7 0,#DDE6F4 10%,#D3DFF1 20%,#C0D1EB 29%,#A9C0E4 36%,#8CA9D8 41%,#6F92CC 46%,#5580C2 50%,#3F6DB7 55%,#2D5DAB 62%,#2050A3 70%,#18499F 78%,#15489E 84%,#15489E 100%)}
 .band-live{--line:rgba(21,72,158,.22);--sub:#2E3A55;--muted:#45506B}
 .band-concert{--accent:#FEF7ED;--text:#FEF7ED;--sub:#DCE5F4;--muted:#BCCBE8;--line:rgba(254,247,237,.35);color:var(--text)}
 .band-concert .btn.outline:hover{background:rgba(254,247,237,.12)}
@@ -75,13 +75,13 @@ footer{color:#C9D3EA}
 .foot-lights{height:4px;background-image:radial-gradient(circle,rgba(254,247,237,.75) 1.3px,transparent 1.8px);background-size:22px 4px;background-position:center;opacity:.55}
 .home{display:flex;align-items:center;justify-content:space-between;gap:24px;color:#FEF7ED;text-decoration:none}
 .home-text{display:flex;flex-direction:column;gap:6px;min-width:0}
-.home-k{font-size:13px;letter-spacing:.24em;color:#8EC3FF}
+.home-k{font-size:13px;letter-spacing:.24em;color:#BFD8FF}
 .home-t{font-family:'Gowun Batang',serif;font-weight:700;font-size:clamp(32px,5vw,56px);line-height:1.2;letter-spacing:-.01em;background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;transition:background-size .4s ease;width:fit-content}
-.home-s{font-size:15px;color:#AEB7D6}
+.home-s{font-size:15px;color:#D3DCF0}
 .home-arrow{flex:none;width:64px;height:64px;border-radius:50%;border:1px solid rgba(254,247,237,.5);display:grid;place-items:center;transition:background .3s ease,color .3s ease,transform .3s ease}
 .home:hover .home-t,.home:focus-visible .home-t{background-size:100% 1px}
 .home:hover .home-arrow,.home:focus-visible .home-arrow{background:#FEF7ED;color:#0D1230;transform:translateX(4px)}
-.foot-bottom{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 24px;font-size:13px;color:#8F9AC0}
+.foot-bottom{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 24px;font-size:13px;color:#C3CEE8}
 .links{display:flex;flex-wrap:wrap;gap:6px 18px}
 .links a{color:#DCE5F4;text-decoration:none}
 .links a:hover{text-decoration:underline;text-underline-offset:4px}
@@ -555,7 +555,7 @@ footer{color:#C9D3EA}
 <footer>
   <div class="wrap foot">
     <div class="foot-lights" aria-hidden="true"></div>
-    <a class="home" href="https://heebonyang.web.app">
+    <a class="home" href="https://heebonyang.web.app" target="_blank" rel="noopener">
       <span class="home-text">
         <span class="home-k">HOME</span>
         <span class="home-t">양희본 홈페이지</span>
