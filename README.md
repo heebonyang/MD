@@ -1,7 +1,7 @@
 # 양희본 0집 웹사이트
 
 - `index.html`: 공개 페이지
-- `admin.html`: 관리자 페이지 (`사이트주소/admin.html`)
+- `admin.html`: 관리자 페이지 (`https://heebonmd.web.app/admin`)
 - `content.json`: 페이지에 들어가는 모든 글과 링크. 관리자 페이지에서 고치면 이 파일이 바뀌어요.
 - `images/`: 관리자 페이지에서 올린 자켓 이미지가 저장되는 곳
 - `firebase.json`: Firebase Hosting 설정

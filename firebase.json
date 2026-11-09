@@ -42,6 +42,18 @@
           }
         ]
       }
+    ],
+    "redirects": [
+      {
+        "source": "/admin",
+        "destination": "/admin.html",
+        "type": 301
+      },
+      {
+        "source": "/admin/",
+        "destination": "/admin.html",
+        "type": 301
+      }
     ]
   }
 }
