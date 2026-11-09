@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-:root{--accent:#15489E;--bg:#FEF7ED;--bg2:#F6EDDF;--line:#E2D6C2;--edge:#C9BBA3;--text:#1A2033;--sub:#3D4459;--muted:#646A7E}
+:root{--accent:#15489E;--bg:#FEF7ED;--field:#FFFBF5;--bg2:#F6EDDF;--line:#E2D6C2;--edge:#C9BBA3;--text:#1A2033;--sub:#3D4459;--muted:#646A7E}
 *{box-sizing:border-box}
 body{margin:0;word-break:keep-all;background:var(--bg);color:var(--text);font-family:'Noto Sans KR',system-ui,sans-serif;line-height:1.7}
 a{color:var(--accent)}
@@ -90,11 +90,11 @@ footer a{color:#FEF7ED}
 .form{display:flex;flex-direction:column;gap:18px;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:28px}
 .form label{display:block;font-size:14px;color:var(--sub);margin-bottom:6px;font-weight:500}
 .form label small{color:var(--muted);font-weight:400;margin-left:6px}
-.form input[type=text],.form input[type=tel],.form textarea,.form select{width:100%;font:inherit;font-size:16px;color:var(--text);background:#fff;border:1px solid var(--edge);border-radius:4px;padding:12px 14px}
+.form input[type=text],.form input[type=tel],.form textarea,.form select{width:100%;font:inherit;font-size:16px;color:var(--text);background:var(--field);border:1px solid var(--edge);border-radius:4px;padding:12px 14px}
 .form textarea{min-height:76px;resize:vertical}
 .form input:focus,.form textarea:focus,.form select:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
 .two{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:18px}
-.qty{display:flex;align-items:center;border:1px solid var(--edge);border-radius:4px;background:#fff;width:fit-content}
+.qty{display:flex;align-items:center;border:1px solid var(--edge);border-radius:4px;background:var(--field);width:fit-content}
 .qty button{width:48px;height:48px;border:0;background:none;font-size:22px;color:var(--accent);cursor:pointer}
 .qty button:disabled{color:var(--edge);cursor:default}
 .qty output{min-width:44px;text-align:center;font-size:18px;font-weight:700}
@@ -106,7 +106,7 @@ footer a{color:#FEF7ED}
 .agree details{margin-top:4px;font-size:13px;color:var(--muted)}
 .agree summary{cursor:pointer;color:var(--sub)}
 .agree ul{margin:8px 0 0;padding-left:18px}
-.sign{border:1px solid var(--edge);border-radius:4px;background:#fff;padding:16px 18px;display:flex;flex-direction:column;gap:12px}
+.sign{border:1px solid var(--edge);border-radius:4px;background:var(--field);padding:16px 18px;display:flex;flex-direction:column;gap:12px}
 .sign .opt{display:flex;gap:12px;align-items:flex-start;cursor:pointer;margin:0;font-weight:400}
 .sign .opt input{width:20px;height:20px;margin:3px 0 0;accent-color:var(--accent);flex:none}
 .sign .opt b{display:block;font-size:16px;color:var(--text);font-weight:500}
