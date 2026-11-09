@@ -30,6 +30,7 @@
     "coverImage": "images/album0.jpg"
   },
   "concert": {
+    "date": "2027-03-27",
     "headline": "2027. 03. 27 토요일\n부산에서.",
     "description": "100일의 라이브가 끝나고 나흘 뒤, 무대에서 직접 부릅니다.",
     "venue": "[공연장]",

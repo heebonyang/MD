@@ -49,6 +49,26 @@ section h2{margin:0;font-size:clamp(36px,5vw,56px);line-height:1.2}
 .count{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding-top:28px;flex-wrap:wrap}
 .count span:first-child{color:var(--muted)}
 .count b{font-family:'Gowun Batang',serif;font-size:48px;color:var(--accent)}
+.count-sub{margin:4px 0 0;text-align:right;font-size:15px;color:var(--sub)}
+/* 100일 항로: 광안리(출항) → Day 100 → 육지(공연). 배 위치는 오늘 날짜로 계산 */
+.live{padding-bottom:40px}
+.voyage{padding-bottom:120px}
+.route{position:relative;height:96px;margin-left:4px}
+.sea{position:absolute;left:0;top:0;bottom:0;right:58px}
+.track{position:absolute;left:0;right:0;top:64px;height:0;border-top:2px dashed rgba(21,72,158,.35)}
+.wake{position:absolute;left:0;top:-2px;height:2px;width:0;background:var(--accent);border-radius:2px;transition:width 1.2s ease}
+.tick{position:absolute;top:59px;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:#E6EDF7;border:2px solid var(--accent)}
+.tick em{position:absolute;top:18px;left:50%;transform:translateX(-50%);font-style:normal;font-size:12px;letter-spacing:.06em;color:var(--muted);white-space:nowrap}
+.ship{position:absolute;top:30px;left:0;width:40px;margin-left:-20px;color:var(--accent);transition:left 1.2s ease}
+.ship svg{display:block;animation:bob 3.2s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-3px) rotate(2deg)}}
+.land{position:absolute;right:-4px;top:26px;color:var(--accent)}
+.land svg{display:block}
+.beam{opacity:.0;animation:beam 2.4s ease-in-out infinite}
+@keyframes beam{0%,100%{opacity:0}50%{opacity:.9}}
+.route-labels{display:flex;justify-content:space-between;gap:16px;margin-top:6px;font-size:14px;color:var(--sub)}
+.route-labels b{color:var(--accent);font-weight:700}
+@media (prefers-reduced-motion:reduce){.ship svg,.beam{animation:none}.beam{opacity:.6}}
 .album{background:linear-gradient(to bottom,#FEF7ED 0,#FEF7ED 50%,#FBF6EF 62%,#F5F3F0 75%,#EDF0F4 88%,#E6EDF7 100%)}
 .album .grid2{padding-top:72px;padding-bottom:112px;align-items:center}
 .album .col{gap:18px}
@@ -561,13 +581,30 @@ footer{color:#C9D3EA}
       <div class="row"><span>방송 시간</span><span data-bind="live.time"></span></div>
       <div class="row"><span>어디서</span><span data-bind="live.place"></span></div>
       <div class="count"><span id="countLabel"></span><b id="countValue"></b></div>
+      <p class="count-sub" id="countSub"></p>
+    </div>
+  </div>
+  <div class="wrap voyage">
+    <div class="route" id="route" role="img">
+      <div class="sea">
+      <div class="track"><i class="wake" id="wake"></i></div>
+      <span class="tick" style="left:0"></span>
+      <span class="tick" style="left:40%"><em>Day 50</em></span>
+      <span class="tick" style="left:80%"><em>Day 100</em></span>
+      <div class="ship" id="ship" aria-hidden="true"><svg viewBox="0 0 40 34" width="40" height="34"><path d="M20 2v22" stroke="currentColor" stroke-width="1.6"/><path d="M21.5 4L34 23H21.5z" fill="currentColor"/><path d="M18.5 8L9 23h9.5z" fill="currentColor" opacity=".55"/><path d="M4 26h32l-5 6H9z" fill="currentColor"/></svg></div>
+      </div>
+      <div class="land" aria-hidden="true"><svg viewBox="0 0 64 40" width="64" height="40"><path d="M0 40c6-10 14-15 24-15 6 0 10-6 18-6 10 0 16 9 22 21z" fill="currentColor"/><path d="M44 19V7h4v12z" fill="currentColor"/><path d="M43 7h6l-1-3h-4z" fill="currentColor"/><circle cx="46" cy="9.5" r="1.6" fill="#FEF7ED"/><path class="beam" d="M48 9.5L64 5v9z" fill="#FEF7ED"/></svg></div>
+    </div>
+    <div class="route-labels">
+      <span><b>출항</b> <span id="routeStart"></span> · 광안리</span>
+      <span><b>상륙</b> <span id="routeEnd"></span> · 공연</span>
     </div>
   </div>
 </section>
 
 <section id="concert" class="band band-concert">
   <div class="wrap concert">
-    <div class="kicker">CONCERT</div>
+    <div class="kicker">LANDFALL · CONCERT</div>
     <h2 class="serif pre" data-bind="concert.headline"></h2>
     <p class="desc" style="max-width:560px" data-bind="concert.description"></p>
     <div class="cards">
@@ -599,7 +636,7 @@ footer{color:#C9D3EA}
 </div>
 
 <script>
-var DEFAULT = {"accent": "#15489E", "harbor": {"kicker": "DEPARTURE · 35°09′N 129°07′E", "title": "부산 광안리에서,\n첫 항해를 시작합니다.", "sub": "0집도, 100일의 라이브도, 첫 공연도.\n모두 이 바다에서 출발해요."}, "hero": {"kicker": "SINGER-SONGWRITER", "title": "양희본", "titleAccent": "0집", "lead": "발라드와 모던록, 포크 사이 어딘가.\n조용히, 끝까지 들어야 하는 노래들."}, "live": {"headline": "100일 동안,\n매일 한 시간.", "description": "12월 14일부터 100일 동안, 부산 광안리에서 하루도 빠짐없이 유튜브 세로 라이브로 노래합니다. 0집의 노래들, 그리고 그 사이의 이야기들.", "startDate": "2026-12-14", "days": 100, "time": "매일 [방송 시간]", "place": "부산 광안리 · 유튜브 양희본"}, "album": {"title": "양희본 0집", "description": "첫 번째보다 앞에 있는 음반. 손으로 만지고, 처음부터 끝까지 들을 수 있는 실물 음반으로 만나보세요.", "tracklist": "[수록곡 목록]", "hiddenTrack": "어디에서도 들을 수 없는 히든 트랙 1곡 수록", "price": "10,000원 · 택배비 포함", "buyUrl": "#order", "buyButton": "음반 구매하기", "coverImage": "images/album0.jpg"}, "order": {"unitPrice": 10000, "priceNote": "택배비 포함", "maxQty": 10, "bank": "신한은행 957-06-111158 양희본"}, "concert": {"headline": "2027. 03. 27 토요일\n부산에서.", "description": "100일의 라이브가 끝나고 나흘 뒤, 무대에서 직접 부릅니다.", "venue": "[공연장]", "time": "[공연 시간]", "ticket": "[티켓 가격]", "ticketUrl": "", "ticketButton": "예매 알림 받기"}, "links": {"youtube": "", "instagram": "", "email": ""}};
+var DEFAULT = {"accent": "#15489E", "harbor": {"kicker": "DEPARTURE · 35°09′N 129°07′E", "title": "부산 광안리에서,\n첫 항해를 시작합니다.", "sub": "0집도, 100일의 라이브도, 첫 공연도.\n모두 이 바다에서 출발해요."}, "hero": {"kicker": "SINGER-SONGWRITER", "title": "양희본", "titleAccent": "0집", "lead": "발라드와 모던록, 포크 사이 어딘가.\n조용히, 끝까지 들어야 하는 노래들."}, "live": {"headline": "100일 동안,\n매일 한 시간.", "description": "12월 14일부터 100일 동안, 부산 광안리에서 하루도 빠짐없이 유튜브 세로 라이브로 노래합니다. 0집의 노래들, 그리고 그 사이의 이야기들.", "startDate": "2026-12-14", "days": 100, "time": "매일 [방송 시간]", "place": "부산 광안리 · 유튜브 양희본"}, "album": {"title": "양희본 0집", "description": "첫 번째보다 앞에 있는 음반. 손으로 만지고, 처음부터 끝까지 들을 수 있는 실물 음반으로 만나보세요.", "tracklist": "[수록곡 목록]", "hiddenTrack": "어디에서도 들을 수 없는 히든 트랙 1곡 수록", "price": "10,000원 · 택배비 포함", "buyUrl": "#order", "buyButton": "음반 구매하기", "coverImage": "images/album0.jpg"}, "order": {"unitPrice": 10000, "priceNote": "택배비 포함", "maxQty": 10, "bank": "신한은행 957-06-111158 양희본"}, "concert": {"headline": "2027. 03. 27 토요일\n부산에서.", "description": "100일의 라이브가 끝나고 나흘 뒤, 무대에서 직접 부릅니다.", "venue": "[공연장]", "time": "[공연 시간]", "ticket": "[티켓 가격]", "ticketUrl": "", "ticketButton": "예매 알림 받기", "date": "2027-03-27"}, "links": {"youtube": "", "instagram": "", "email": ""}};
 function get(o, path){ return path.split('.').reduce(function(a,k){ return a == null ? a : a[k]; }, o); }
 function fmt(d){
   var w = ['일','월','화','수','목','금','토'][d.getDay()];
@@ -626,14 +663,29 @@ function render(c){
   document.getElementById('startText').textContent = fmt(start);
   document.getElementById('lastLabel').textContent = days + '일째';
   document.getElementById('lastText').textContent = fmt(last);
+  // 공연일(육지): concert.date, 없으면 마지막 라이브 나흘 뒤
+  var cp = (c.concert && c.concert.date || '').split('-').map(Number);
+  var land = cp.length === 3 && cp[0] ? new Date(cp[0], cp[1]-1, cp[2]) : new Date(last.getFullYear(), last.getMonth(), last.getDate() + 4);
   var now = new Date(); var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  var diff = Math.round((start - today) / 86400000);
-  var label, value;
-  if (diff > 0) { label = '첫 라이브까지'; value = 'D-' + diff; }
-  else if (-diff < days) { label = '오늘은'; value = (1 - diff) + '일째'; }
-  else { label = days + '일 라이브'; value = '완주'; }
+  var DAY = 86400000;
+  var diff = Math.round((start - today) / DAY);          // 출항까지 남은 날
+  var toLand = Math.round((land - today) / DAY);         // 공연까지 남은 날
+  var lastToLand = Math.max(1, Math.round((land - last) / DAY));
+  var label, value, sub, pos;                            // pos: 항로 위 배 위치 (0~100%)
+  if (diff > 0) { label = '출항까지'; value = 'D-' + diff; sub = (start.getMonth()+1) + '월 ' + start.getDate() + '일, 광안리에서 닻을 올려요.'; pos = 0; }
+  else if (-diff < days) { var n = 1 - diff; label = '항해 중'; value = n + '일째'; sub = '육지(공연)까지 ' + toLand + '일 남았어요.'; pos = (n - 1) / (days - 1) * 80; }
+  else if (toLand > 0) { label = days + '일 항해 완주'; value = '상륙 D-' + toLand; sub = '수평선 너머로 육지가 보여요.'; pos = 80 + (1 - toLand / lastToLand) * 17; }
+  else if (toLand === 0) { label = '오늘'; value = '상륙'; sub = '공연장에서 만나요.'; pos = 100; }
+  else { label = '항해 완료'; value = '도착'; sub = '100일의 항해를 함께해 주셔서 고마워요.'; pos = 100; }
   document.getElementById('countLabel').textContent = label;
   document.getElementById('countValue').textContent = value;
+  document.getElementById('countSub').textContent = sub;
+  document.getElementById('ship').style.left = pos + '%';
+  document.getElementById('wake').style.width = pos + '%';
+  var md = function(d){ return (d.getMonth()+1) + '.' + d.getDate(); };
+  document.getElementById('routeStart').textContent = md(start);
+  document.getElementById('routeEnd').textContent = md(land);
+  document.getElementById('route').setAttribute('aria-label', '항로: ' + md(start) + ' 광안리 출항, ' + days + '일 라이브, ' + md(land) + ' 공연에서 상륙. 지금: ' + label + ' ' + value);
   // links
   setLink(document.getElementById('buyBtn'), c.album.buyUrl);
   setLink(document.getElementById('ticketBtn'), c.concert.ticketUrl);
