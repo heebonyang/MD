@@ -30,15 +30,10 @@
           {
             "key": "Cache-Control",
             "value": "no-cache"
-          }
-        ]
-      },
-      {
-        "source": "/admin.html",
-        "headers": [
+          },
           {
-            "key": "X-Robots-Tag",
-            "value": "noindex, nofollow"
+            "key": "Access-Control-Allow-Origin",
+            "value": "*"
           }
         ]
       }
@@ -46,12 +41,17 @@
     "redirects": [
       {
         "source": "/admin",
-        "destination": "/admin.html",
+        "destination": "https://heebonyang.web.app/admin",
         "type": 301
       },
       {
         "source": "/admin/",
-        "destination": "/admin.html",
+        "destination": "https://heebonyang.web.app/admin",
+        "type": 301
+      },
+      {
+        "source": "/admin.html",
+        "destination": "https://heebonyang.web.app/admin",
         "type": 301
       }
     ]

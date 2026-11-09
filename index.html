@@ -732,7 +732,37 @@ document.getElementById('orderForm').addEventListener('submit', function(e){
       : '주문을 넣지 못했어요. 인터넷 연결을 확인하고 다시 시도해 주세요.');
   }).then(function(){ order.busy = false; btn.disabled = false; btn.textContent = '주문하기'; });
 });
-fetch('content.json?t=' + Date.now()).then(function(r){ return r.ok ? r.json() : null; }).then(function(c){ if (c) render(c); }).catch(function(){});
+// 페이지 문구: 메인 홈페이지 관리자(heebonyang.web.app/admin › '0집 페이지')에서 고친 값이 Firestore settings/albumPage 에 저장돼요.
+// 아직 한 번도 저장하지 않았으면 content.json(처음 값)을 써요. 어느 쪽이든 빠진 칸은 DEFAULT 로 채워요.
+function fsValue(v){
+  if (!v) return null;
+  if ('stringValue' in v) return v.stringValue;
+  if ('integerValue' in v) return Number(v.integerValue);
+  if ('doubleValue' in v) return Number(v.doubleValue);
+  if ('booleanValue' in v) return v.booleanValue;
+  if ('nullValue' in v) return null;
+  if ('arrayValue' in v) return (v.arrayValue.values || []).map(fsValue);
+  if ('mapValue' in v) return fsFields(v.mapValue.fields || {});
+  return null;
+}
+function fsFields(f){ var o = {}; Object.keys(f).forEach(function(k){ o[k] = fsValue(f[k]); }); return o; }
+function merge(base, over){
+  var out = JSON.parse(JSON.stringify(base));
+  Object.keys(over || {}).forEach(function(k){
+    var v = over[k];
+    if (v && typeof v === 'object' && !Array.isArray(v) && out[k] && typeof out[k] === 'object') out[k] = merge(out[k], v);
+    else if (v != null) out[k] = v;
+  });
+  return out;
+}
+fetch(FS + '/settings/albumPage')
+  .then(function(r){ return r.ok ? r.json() : null; })
+  .then(function(j){
+    if (j && j.fields) return fsFields(j.fields);
+    return fetch('content.json?t=' + Date.now()).then(function(r){ return r.ok ? r.json() : null; });
+  })
+  .then(function(c){ if (c) render(merge(DEFAULT, c)); })
+  .catch(function(){});
 </script>
 </body>
 </html>
