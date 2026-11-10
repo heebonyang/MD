@@ -20,6 +20,15 @@ a{color:var(--accent)}
 .pre{white-space:pre-line}
 .kicker{font-size:14px;letter-spacing:.2em;color:var(--accent)}
 .top{position:relative;background:#0D1230}
+/* 맨 윗줄: 메인 홈페이지처럼 이름 + 유튜브·인스타그램 */
+.topbar{position:absolute;top:0;left:0;right:0;z-index:2;display:flex;align-items:center;gap:6px;padding-top:18px;padding-bottom:18px}
+.brand{font-size:14px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#DCE5F4;text-decoration:none;white-space:nowrap;margin-right:6px}
+.brand:hover{color:#fff}
+.sns{display:flex;align-items:center}
+.sns a{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;color:#DCE5F4;transition:color .2s,background .2s}
+.sns a:hover{background:rgba(254,247,237,.1)}
+.sns a.yt:hover{color:#ff0000}
+.sns a.ig:hover{color:#ff5fa8}
 .album h1{margin:0;font-weight:700;font-size:clamp(52px,7vw,96px);line-height:1.05;letter-spacing:-.02em}
 .album h1 .acc{color:var(--accent)}
 .lead{margin:0;font-size:19px;color:var(--text)}
@@ -165,6 +174,13 @@ footer{color:#C9D3EA}
 </head>
 <body>
 <div class="top">
+<header class="topbar wrap">
+  <a class="brand" href="https://heebonyang.web.app" target="_blank" rel="noopener">Heebon Yang</a>
+  <span class="sns">
+    <a id="snsYt" href="https://www.youtube.com/@양희본" target="_blank" rel="noopener" aria-label="YouTube에서 보기" title="YouTube" class="yt"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="4" fill="currentColor"/><path d="M10 9l5 3-5 3z" fill="#0D1230"/></svg></a>
+    <a id="snsIg" href="https://www.instagram.com/heebonyang" target="_blank" rel="noopener" aria-label="Instagram에서 보기" title="Instagram" class="ig"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+  </span>
+</header>
 <div class="bridge"><svg viewBox="0 0 1440 440" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
 <rect x="0" y="0" width="1440" height="440" fill="#0D1230"/>
 <rect x="0" y="208" width="1440" height="232" fill="#0A0E26"/>
@@ -636,7 +652,7 @@ footer{color:#C9D3EA}
 </div>
 
 <script>
-var DEFAULT = {"accent": "#15489E", "harbor": {"kicker": "DEPARTURE · 35°09′N 129°07′E", "title": "부산 광안리에서,\n첫 항해를 시작합니다.", "sub": "0집도, 100일의 라이브도, 첫 공연도.\n모두 이 바다에서 출발해요."}, "hero": {"kicker": "SINGER-SONGWRITER", "title": "양희본", "titleAccent": "0집", "lead": "발라드와 모던록, 포크 사이 어딘가.\n조용히, 끝까지 들어야 하는 노래들."}, "live": {"headline": "100일 동안,\n매일 한 시간.", "description": "12월 14일부터 100일 동안, 부산 광안리에서 하루도 빠짐없이 유튜브 세로 라이브로 노래합니다. 0집의 노래들, 그리고 그 사이의 이야기들.", "startDate": "2026-12-14", "days": 100, "time": "매일 [방송 시간]", "place": "부산 광안리 · 유튜브 양희본"}, "album": {"title": "양희본 0집", "description": "첫 번째보다 앞에 있는 음반. 손으로 만지고, 처음부터 끝까지 들을 수 있는 실물 음반으로 만나보세요.", "tracklist": "[수록곡 목록]", "hiddenTrack": "어디에서도 들을 수 없는 히든 트랙 1곡 수록", "price": "10,000원 · 택배비 포함", "buyUrl": "#order", "buyButton": "음반 구매하기", "coverImage": "images/album0.jpg"}, "order": {"unitPrice": 10000, "priceNote": "택배비 포함", "maxQty": 10, "bank": "신한은행 957-06-111158 양희본"}, "concert": {"headline": "2027. 03. 27 토요일\n부산에서.", "description": "100일의 라이브가 끝나고 나흘 뒤, 무대에서 직접 부릅니다.", "venue": "[공연장]", "time": "[공연 시간]", "ticket": "[티켓 가격]", "ticketUrl": "", "ticketButton": "예매 알림 받기", "date": "2027-03-27"}, "links": {"youtube": "", "instagram": "", "email": ""}};
+var DEFAULT = {"accent": "#15489E", "harbor": {"kicker": "DEPARTURE · 35°09′N 129°07′E", "title": "부산 광안리에서,\n첫 항해를 시작합니다.", "sub": "0집도, 100일의 라이브도, 첫 공연도.\n모두 이 바다에서 출발해요."}, "hero": {"kicker": "SINGER-SONGWRITER", "title": "양희본", "titleAccent": "0집", "lead": "발라드와 모던록, 포크 사이 어딘가.\n조용히, 끝까지 들어야 하는 노래들."}, "live": {"headline": "100일 동안,\n매일 한 시간.", "description": "12월 14일부터 100일 동안, 부산 광안리에서 하루도 빠짐없이 유튜브 세로 라이브로 노래합니다. 0집의 노래들, 그리고 그 사이의 이야기들.", "startDate": "2026-12-14", "days": 100, "time": "매일 [방송 시간]", "place": "부산 광안리 · 유튜브 양희본"}, "album": {"title": "양희본 0집", "description": "첫 번째보다 앞에 있는 음반. 손으로 만지고, 처음부터 끝까지 들을 수 있는 실물 음반으로 만나보세요.", "tracklist": "[수록곡 목록]", "hiddenTrack": "어디에서도 들을 수 없는 히든 트랙 1곡 수록", "price": "10,000원 · 택배비 포함", "buyUrl": "#order", "buyButton": "음반 구매하기", "coverImage": "images/album0.jpg"}, "order": {"unitPrice": 10000, "priceNote": "택배비 포함", "maxQty": 10, "bank": "신한은행 957-06-111158 양희본"}, "concert": {"headline": "2027. 03. 27 토요일\n부산에서.", "description": "100일의 라이브가 끝나고 나흘 뒤, 무대에서 직접 부릅니다.", "venue": "[공연장]", "time": "[공연 시간]", "ticket": "[티켓 가격]", "ticketUrl": "", "ticketButton": "예매 알림 받기", "date": "2027-03-27"}, "links": {"youtube": "https://www.youtube.com/@양희본", "instagram": "https://www.instagram.com/heebonyang", "email": ""}};
 function get(o, path){ return path.split('.').reduce(function(a,k){ return a == null ? a : a[k]; }, o); }
 function fmt(d){
   var w = ['일','월','화','수','목','금','토'][d.getDay()];
@@ -695,6 +711,9 @@ function render(c){
     var img = new Image(); img.src = c.album.coverImage; img.alt = (c.album.title || '') + ' 자켓'; cover.appendChild(img);
   }
   if (typeof order !== 'undefined') renderOrder();
+  // 맨 윗줄 아이콘: 관리자에서 비워 두면 메인 홈페이지와 같은 주소
+  document.getElementById('snsYt').href = c.links.youtube || 'https://www.youtube.com/@양희본';
+  document.getElementById('snsIg').href = c.links.instagram || 'https://www.instagram.com/heebonyang';
   var links = document.getElementById('links'); links.textContent = '';
   [['유튜브', c.links.youtube], ['인스타그램', c.links.instagram]].forEach(function(l){
     if (!l[1]) return; var a = document.createElement('a'); a.href = l[1]; a.target = '_blank'; a.rel = 'noopener'; a.textContent = l[0]; links.appendChild(a);
