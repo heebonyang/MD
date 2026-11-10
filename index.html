@@ -108,7 +108,6 @@ footer{color:#C9D3EA}
 .home-text{display:flex;flex-direction:column;gap:6px;min-width:0}
 .home-k{font-size:13px;letter-spacing:.24em;color:#BFD8FF}
 .home-t{font-family:'Gowun Batang',serif;font-weight:700;font-size:clamp(32px,5vw,56px);line-height:1.2;letter-spacing:-.01em;background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;transition:background-size .4s ease;width:fit-content}
-.home-s{font-size:15px;color:#D3DCF0}
 .home-arrow{flex:none;width:64px;height:64px;border-radius:50%;border:1px solid rgba(254,247,237,.5);display:grid;place-items:center;transition:background .3s ease,color .3s ease,transform .3s ease}
 .home:hover .home-t,.home:focus-visible .home-t{background-size:100% 1px}
 .home:hover .home-arrow,.home:focus-visible .home-arrow{background:#FEF7ED;color:#0D1230;transform:translateX(4px)}
@@ -641,7 +640,6 @@ footer{color:#C9D3EA}
       <span class="home-text">
         <span class="home-k">HOME</span>
         <span class="home-t">양희본 홈페이지</span>
-        <span class="home-s">음악 · 치과 · 라운지, 더 많은 노래와 이야기</span>
       </span>
       <span class="home-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     </a>
@@ -654,7 +652,7 @@ footer{color:#C9D3EA}
 </div>
 
 <script>
-var DEFAULT = {"accent": "#15489E", "harbor": {"kicker": "DEPARTURE · 35°09′N 129°07′E", "title": "부산 광안리에서,\n첫 항해를 시작합니다.", "sub": "0집도, 100일의 라이브도, 첫 공연도.\n모두 이 바다에서 출발해요."}, "hero": {"kicker": "SINGER-SONGWRITER", "title": "양희본", "titleAccent": "0집", "lead": "발라드와 모던록, 포크 사이 어딘가.\n조용히, 끝까지 들어야 하는 노래들."}, "live": {"headline": "100일 동안,\n매일 한 시간.", "description": "12월 14일부터 100일 동안, 부산 광안리에서 하루도 빠짐없이 유튜브 세로 라이브로 노래합니다. 0집의 노래들, 그리고 그 사이의 이야기들.", "startDate": "2026-12-14", "days": 100, "time": "매일 [방송 시간]", "place": "부산 광안리 · 유튜브 양희본"}, "album": {"title": "양희본 0집", "description": "첫 번째보다 앞에 있는 음반. 손으로 만지고, 처음부터 끝까지 들을 수 있는 실물 음반으로 만나보세요.", "tracklist": "[수록곡 목록]", "hiddenTrack": "어디에서도 들을 수 없는 히든 트랙 1곡 수록", "price": "10,000원 · 택배비 포함", "buyUrl": "#order", "buyButton": "음반 구매하기", "coverImage": "images/album0.jpg"}, "order": {"unitPrice": 10000, "priceNote": "택배비 포함", "maxQty": 10, "bank": "신한은행 957-06-111158 양희본"}, "concert": {"headline": "2027. 03. 27 토요일\n부산에서.", "description": "100일의 라이브가 끝나고 나흘 뒤, 무대에서 직접 부릅니다.", "venue": "[공연장]", "time": "[공연 시간]", "ticket": "[티켓 가격]", "ticketUrl": "", "ticketButton": "예매 알림 받기", "date": "2027-03-27"}, "links": {"youtube": "https://www.youtube.com/@양희본", "instagram": "https://www.instagram.com/heebonyang", "email": ""}};
+var DEFAULT = {"accent": "#15489E", "harbor": {"kicker": "DEPARTURE · 35°09′N 129°07′E", "title": "부산 광안리에서,\n첫 항해를 시작합니다.", "sub": "0집도, 100일의 라이브도, 첫 공연도.\n모두 이 바다에서 출발해요."}, "hero": {"kicker": "SINGER-SONGWRITER", "title": "양희본", "titleAccent": "0집", "lead": "발라드와 모던록, 포크 사이 어딘가.\n조용히, 끝까지 들어야 하는 노래들."}, "live": {"headline": "100일 동안,\n매일 한 시간.", "description": "12월 14일부터 100일 동안, 부산 광안리에서 하루도 빠짐없이 유튜브 세로 라이브로 노래합니다. 0집의 노래들, 그리고 그 사이의 이야기들.", "startDate": "2026-12-14", "days": 100, "time": "매일 [방송 시간]", "place": "부산 광안리 · 유튜브 양희본"}, "album": {"title": "양희본 0집", "description": "첫 번째보다 앞에 있는 음반. 손으로 만지고, 처음부터 끝까지 들을 수 있는 실물 음반으로 만나보세요.", "tracklist": "[수록곡 목록]", "hiddenTrack": "어디에서도 들을 수 없는 히든 트랙 1곡 수록", "price": "10,000원 · 택배비 포함", "buyUrl": "#order", "buyButton": "음반 구매하기", "coverImage": "images/album0.jpg"}, "order": {"unitPrice": 10000, "priceNote": "택배비 포함", "maxQty": 10, "bank": "신한은행 957-06-111158 양희본"}, "concert": {"headline": "2027. 03. 27 토요일\n부산에서.", "description": "100일의 라이브가 끝나고 나흘 뒤, 무대에서 직접 부릅니다.", "venue": "[공연장]", "time": "[공연 시간]", "ticket": "[티켓 가격]", "ticketUrl": "", "ticketButton": "예매 알림 받기", "date": "2027-03-27"}, "links": {"email": ""}};
 function get(o, path){ return path.split('.').reduce(function(a,k){ return a == null ? a : a[k]; }, o); }
 function fmt(d){
   var w = ['일','월','화','수','목','금','토'][d.getDay()];
@@ -713,13 +711,7 @@ function render(c){
     var img = new Image(); img.src = c.album.coverImage; img.alt = (c.album.title || '') + ' 자켓'; cover.appendChild(img);
   }
   if (typeof order !== 'undefined') renderOrder();
-  // 맨 윗줄 아이콘: 관리자에서 비워 두면 메인 홈페이지와 같은 주소
-  document.getElementById('snsYt').href = c.links.youtube || 'https://www.youtube.com/@양희본';
-  document.getElementById('snsIg').href = c.links.instagram || 'https://www.instagram.com/heebonyang';
   var links = document.getElementById('links'); links.textContent = '';
-  [['유튜브', c.links.youtube], ['인스타그램', c.links.instagram]].forEach(function(l){
-    if (!l[1]) return; var a = document.createElement('a'); a.href = l[1]; a.target = '_blank'; a.rel = 'noopener'; a.textContent = l[0]; links.appendChild(a);
-  });
   if (c.links.email) { var s = document.createElement('a'); s.href = 'mailto:' + c.links.email; s.textContent = c.links.email; links.appendChild(s); }
 }
 render(DEFAULT);
