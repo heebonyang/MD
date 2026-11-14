@@ -95,6 +95,22 @@ section h2{margin:0;font-size:clamp(36px,5vw,56px);line-height:1.2}
 .card{border:1px solid var(--line);border-radius:4px;padding:20px 22px}
 .card div:first-child{font-size:13px;color:var(--muted)}
 .card div:last-child{font-size:17px;font-weight:500}
+/* 공연 좌석 배치도: 무대 + 객석, 예매된 좌석은 분홍 (광안대교 불빛과 같은 분홍) */
+.seatmap{width:100%;max-width:760px;margin-top:16px;padding:24px;border:1px solid var(--line);border-radius:6px;background:rgba(13,18,48,.18)}
+.seat-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;font-size:15px;font-weight:500;margin-bottom:18px}
+.seat-head span:last-child{font-size:14px;font-weight:400;color:var(--sub)}
+.seat-head b{color:#F06BC8;font-weight:700}
+.stage{margin:0 auto 22px;width:62%;height:34px;display:grid;place-items:center;border-radius:6px 6px 40% 40%/6px 6px 18px 18px;background:#FEF7ED;color:#15489E;font-size:12px;font-weight:700;letter-spacing:.3em}
+.seats{display:flex;flex-direction:column;align-items:center;gap:6px}
+.seat-row{display:flex;align-items:center;gap:4px}
+.seat-row .rl{width:16px;font-size:11px;color:var(--muted);text-align:center}
+.seat-row .aisle{width:14px}
+.seat{display:inline-block;width:16px;height:14px;border-radius:4px 4px 2px 2px;border:1.5px solid rgba(254,247,237,.7);background:transparent}
+.seat.booked{background:#F06BC8;border-color:#F06BC8;box-shadow:0 0 8px rgba(240,107,200,.55)}
+.seat-legend{display:flex;justify-content:center;gap:20px;margin-top:20px;font-size:13px;color:var(--sub)}
+.seat-legend span{display:inline-flex;align-items:center;gap:8px}
+.seat-note{margin:10px 0 0;text-align:center;font-size:13px;color:var(--muted)}
+@media (max-width:420px){.seatmap{padding:18px 12px}.seat{width:14px;height:12px}.seat-row{gap:3px}.seat-row .aisle{width:8px}.seat-row .rl{width:12px}}
 /* 음반(크림) → 라이브(옅은 파랑) → 공연(파랑) → 홈페이지로 끊김 없이 이어지며 진해지는 파랑. 마지막은 0집 파랑(#15489E)
    (음반 끝 색 = 라이브 시작 색, 라이브~하단은 하나의 그라데이션) */
 .deep{background:linear-gradient(to bottom,#E6EDF7 0,#DDE6F4 10%,#D3DFF1 20%,#C0D1EB 29%,#A9C0E4 36%,#8CA9D8 41%,#6F92CC 46%,#5580C2 50%,#3F6DB7 55%,#2D5DAB 62%,#2050A3 70%,#18499F 78%,#15489E 84%,#15489E 100%)}
@@ -629,6 +645,16 @@ footer{color:#C9D3EA}
       <div class="card"><div>시간</div><div data-bind="concert.time"></div></div>
       <div class="card"><div>티켓</div><div data-bind="concert.ticket"></div></div>
     </div>
+    <div class="seatmap" id="seatmap">
+      <div class="seat-head"><span>좌석 배치도</span><span id="seatCount"></span></div>
+      <div class="stage">STAGE</div>
+      <div class="seats" id="seats" role="img"></div>
+      <div class="seat-legend">
+        <span><i class="seat"></i>예매 가능</span>
+        <span><i class="seat booked"></i>예매 완료</span>
+      </div>
+      <p class="seat-note" id="seatNote"></p>
+    </div>
     <a class="btn outline" id="ticketBtn" href="#" data-bind="concert.ticketButton" style="margin-top:12px"></a>
   </div>
 </section>
@@ -652,7 +678,7 @@ footer{color:#C9D3EA}
 </div>
 
 <script>
-var DEFAULT = {"accent": "#15489E", "harbor": {"kicker": "DEPARTURE · 35°09′N 129°07′E", "title": "부산 광안리에서,\n첫 항해를 시작합니다.", "sub": "0집도, 100일의 라이브도, 첫 공연도.\n모두 이 바다에서 출발해요."}, "hero": {"kicker": "SINGER-SONGWRITER", "title": "양희본", "titleAccent": "0집", "lead": "발라드와 모던록, 포크 사이 어딘가.\n조용히, 끝까지 들어야 하는 노래들."}, "live": {"headline": "100일 동안,\n매일 한 시간.", "description": "12월 14일부터 100일 동안, 부산 광안리에서 하루도 빠짐없이 유튜브 세로 라이브로 노래합니다. 0집의 노래들, 그리고 그 사이의 이야기들.", "startDate": "2026-12-14", "days": 100, "time": "매일 [방송 시간]", "place": "부산 광안리 · 유튜브 양희본"}, "album": {"title": "양희본 0집", "description": "첫 번째보다 앞에 있는 음반. 손으로 만지고, 처음부터 끝까지 들을 수 있는 실물 음반으로 만나보세요.", "tracklist": "[수록곡 목록]", "hiddenTrack": "어디에서도 들을 수 없는 히든 트랙 1곡 수록", "price": "10,000원 · 택배비 포함", "buyUrl": "#order", "buyButton": "음반 구매하기", "coverImage": "images/album0.jpg"}, "order": {"unitPrice": 10000, "priceNote": "택배비 포함", "maxQty": 10, "bank": "신한은행 957-06-111158 양희본"}, "concert": {"headline": "2027. 03. 27 토요일\n부산에서.", "description": "100일의 라이브가 끝나고 나흘 뒤, 무대에서 직접 부릅니다.", "venue": "[공연장]", "time": "[공연 시간]", "ticket": "[티켓 가격]", "ticketUrl": "", "ticketButton": "예매 알림 받기", "date": "2027-03-27"}, "links": {"email": ""}};
+var DEFAULT = {"accent": "#15489E", "harbor": {"kicker": "DEPARTURE · 35°09′N 129°07′E", "title": "부산 광안리에서,\n첫 항해를 시작합니다.", "sub": "0집도, 100일의 라이브도, 첫 공연도.\n모두 이 바다에서 출발해요."}, "hero": {"kicker": "SINGER-SONGWRITER", "title": "양희본", "titleAccent": "0집", "lead": "발라드와 모던록, 포크 사이 어딘가.\n조용히, 끝까지 들어야 하는 노래들."}, "live": {"headline": "100일 동안,\n매일 한 시간.", "description": "12월 14일부터 100일 동안, 부산 광안리에서 하루도 빠짐없이 유튜브 세로 라이브로 노래합니다. 0집의 노래들, 그리고 그 사이의 이야기들.", "startDate": "2026-12-14", "days": 100, "time": "매일 [방송 시간]", "place": "부산 광안리 · 유튜브 양희본"}, "album": {"title": "양희본 0집", "description": "첫 번째보다 앞에 있는 음반. 손으로 만지고, 처음부터 끝까지 들을 수 있는 실물 음반으로 만나보세요.", "tracklist": "[수록곡 목록]", "hiddenTrack": "어디에서도 들을 수 없는 히든 트랙 1곡 수록", "price": "10,000원 · 택배비 포함", "buyUrl": "#order", "buyButton": "음반 구매하기", "coverImage": "images/album0.jpg"}, "order": {"unitPrice": 10000, "priceNote": "택배비 포함", "maxQty": 10, "bank": "신한은행 957-06-111158 양희본"}, "concert": {"headline": "2027. 03. 27 토요일\n부산에서.", "description": "100일의 라이브가 끝나고 나흘 뒤, 무대에서 직접 부릅니다.", "venue": "[공연장]", "time": "[공연 시간]", "ticket": "[티켓 가격]", "ticketUrl": "", "ticketButton": "예매 알림 받기", "date": "2027-03-27", "seatRows": 8, "seatsPerRow": 14, "bookedSeats": "", "seatNote": "공연장이 정해지면 실제 배치로 바뀌어요."}, "links": {"email": ""}};
 function get(o, path){ return path.split('.').reduce(function(a,k){ return a == null ? a : a[k]; }, o); }
 function fmt(d){
   var w = ['일','월','화','수','목','금','토'][d.getDay()];
@@ -662,6 +688,31 @@ function setLink(el, url){
   if (url && url.charAt(0) === '#') { el.href = url; el.removeAttribute('target'); el.style.opacity = ''; el.style.cursor = ''; }
   else if (url) { el.href = url; el.target = '_blank'; el.rel = 'noopener'; el.hidden = false; el.style.opacity = ''; el.style.cursor = ''; }
   else { el.removeAttribute('href'); el.style.opacity = '.55'; el.style.cursor = 'default'; }
+}
+// 좌석 배치도: 줄 수 × 한 줄 좌석 수(가운데 통로), 예매된 좌석은 "A3, A4, C7" 처럼 적은 것만 분홍
+function renderSeats(cc){
+  var rows = Math.max(1, Math.min(20, Number(cc.seatRows) || 8));
+  var per = Math.max(2, Math.min(20, Number(cc.seatsPerRow) || 14));
+  var booked = {};
+  String(cc.bookedSeats || '').toUpperCase().split(/[\s,]+/).forEach(function(k){ if (k) booked[k] = true; });
+  var box = document.getElementById('seats'); box.textContent = '';
+  var total = rows * per, taken = 0, half = Math.ceil(per / 2);
+  for (var r = 0; r < rows; r++) {
+    var L = String.fromCharCode(65 + r), row = document.createElement('div'); row.className = 'seat-row';
+    var lab = document.createElement('span'); lab.className = 'rl'; lab.textContent = L; row.appendChild(lab);
+    for (var n = 1; n <= per; n++) {
+      if (n === half + 1) { var a = document.createElement('span'); a.className = 'aisle'; row.appendChild(a); }
+      var seat = document.createElement('i'); seat.className = 'seat';
+      if (booked[L + n]) { seat.className += ' booked'; taken++; }
+      seat.title = L + n + (booked[L + n] ? ' · 예매 완료' : '');
+      row.appendChild(seat);
+    }
+    var lab2 = document.createElement('span'); lab2.className = 'rl'; lab2.textContent = L; row.appendChild(lab2);
+    box.appendChild(row);
+  }
+  document.getElementById('seatCount').innerHTML = '전체 ' + total + '석 · 예매 <b>' + taken + '</b>석 · 남은 ' + (total - taken) + '석';
+  box.setAttribute('aria-label', '좌석 배치도: 무대 앞 ' + rows + '줄, 전체 ' + total + '석 중 ' + taken + '석 예매 완료');
+  document.getElementById('seatNote').textContent = cc.seatNote || '';
 }
 function render(c){
   if (typeof order !== 'undefined') order.c = c;
@@ -705,6 +756,7 @@ function render(c){
   // links
   setLink(document.getElementById('buyBtn'), c.album.buyUrl);
   setLink(document.getElementById('ticketBtn'), c.concert.ticketUrl);
+  renderSeats(c.concert);
   var cover = document.getElementById('cover');
   if (c.album.coverImage) {
     cover.textContent = ''; cover.style.border = 'none';
