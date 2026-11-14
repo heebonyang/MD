@@ -107,6 +107,19 @@ section h2{margin:0;font-size:clamp(36px,5vw,56px);line-height:1.2}
 .seat-row .aisle{width:14px}
 .seat{display:inline-block;width:16px;height:14px;border-radius:4px 4px 2px 2px;border:1.5px solid rgba(254,247,237,.7);background:transparent}
 .seat.booked{background:#F06BC8;border-color:#F06BC8;box-shadow:0 0 8px rgba(240,107,200,.55)}
+button.seat{padding:0;font:inherit;cursor:default}
+.seatmap.picking button.seat:not(.booked){cursor:pointer}
+.seatmap.picking button.seat:not(.booked):hover{background:rgba(254,247,237,.35)}
+.seat.picked,.seatmap.picking button.seat.picked:hover{background:#FEF7ED;border-color:#FEF7ED;box-shadow:0 0 0 2px rgba(254,247,237,.35)}
+button.seat:focus-visible{outline:2px solid #FEF7ED;outline-offset:2px}
+.ticket-closed{margin:0;font-size:14px;color:var(--sub)}
+/* 예매서는 파란 바탕 위 크림색 카드: 주문서와 같은 색으로 되돌림 */
+.ticketbox{width:100%;max-width:600px;margin-top:8px;--text:#1A2033;--sub:#3D4459;--muted:#646A7E;--line:#E2D6C2;--accent:#15489E;color:var(--text)}
+.ticketbox:focus{outline:none}
+.picked-list{display:flex;flex-wrap:wrap;gap:8px;min-height:44px;align-items:center;font-size:15px;color:var(--muted)}
+.picked-list .chip{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 6px 0 14px;border-radius:999px;background:#15489E;color:#FEF7ED;font-weight:700;font-size:15px}
+.picked-list .chip button{width:28px;height:28px;border:0;border-radius:50%;background:transparent;color:#FEF7ED;font-size:16px;cursor:pointer}
+.picked-list .chip button:hover{background:rgba(254,247,237,.2)}
 .seat-legend{display:flex;justify-content:center;gap:20px;margin-top:20px;font-size:13px;color:var(--sub)}
 .seat-legend span{display:inline-flex;align-items:center;gap:8px}
 .seat-note{margin:10px 0 0;text-align:center;font-size:13px;color:var(--muted)}
@@ -651,11 +664,67 @@ footer{color:#C9D3EA}
       <div class="seats" id="seats" role="img"></div>
       <div class="seat-legend">
         <span><i class="seat"></i>예매 가능</span>
+        <span class="lg-pick" hidden><i class="seat picked"></i>선택한 좌석</span>
         <span><i class="seat booked"></i>예매 완료</span>
       </div>
       <p class="seat-note" id="seatNote"></p>
     </div>
     <a class="btn outline" id="ticketBtn" href="#" data-bind="concert.ticketButton" style="margin-top:12px"></a>
+    <p class="ticket-closed" id="ticketClosed" hidden>예매가 열리면 이 자리에서 좌석을 골라 예매할 수 있어요.</p>
+
+    <!-- 공연 예매서: 0집 주문서와 같은 모양. 좌석은 위 배치도에서 눌러 고름 -->
+    <div class="ticketbox" id="ticket" tabindex="-1" aria-label="공연 예매서" hidden>
+      <form class="form" id="ticketForm" novalidate>
+        <div>
+          <label id="tSeatsLabel">선택한 좌석 <small>위 배치도에서 눌러 골라 주세요 · 최대 <span id="tMax"></span>석</small></label>
+          <div class="picked-list" id="tSeats" aria-labelledby="tSeatsLabel" aria-live="polite"></div>
+        </div>
+        <div class="two">
+          <div><label for="tName">이름</label><input type="text" id="tName" autocomplete="name" maxlength="30" required></div>
+          <div><label for="tPhone">연락처</label><input type="tel" id="tPhone" autocomplete="tel" inputmode="tel" placeholder="010-1234-5678" maxlength="14" required></div>
+        </div>
+        <div><label for="tDepositor">입금자명 <small>예매자와 다를 때만</small></label><input type="text" id="tDepositor" maxlength="30"></div>
+        <div><label for="tMemo">요청사항 <small>선택</small></label><textarea id="tMemo" maxlength="300"></textarea></div>
+        <div class="total"><span>입금하실 금액 <small id="tPriceNote"></small></span><b id="tTotal"></b></div>
+        <div class="agree">
+          <input type="checkbox" id="tAgree" required>
+          <div>
+            <label for="tAgree" style="margin:0;font-weight:400;font-size:15px">[필수] 개인정보 수집·이용에 동의해요</label>
+            <details>
+              <summary>자세히 보기</summary>
+              <ul>
+                <li>수집 항목: 이름, 연락처, 입금자명, 요청사항</li>
+                <li>이용 목적: 입금 확인, 예매 확인, 공연 관련 연락</li>
+                <li>보관 기간: 공연이 끝난 뒤 1년 (법령에 따라 보관해야 하는 경우 그 기간)</li>
+                <li>동의하지 않으실 수 있지만, 이 경우 예매할 수 없어요.</li>
+              </ul>
+            </details>
+          </div>
+        </div>
+        <p class="err" id="ticketErr" role="alert" hidden></p>
+        <div class="actions">
+          <button type="submit" class="btn" id="ticketSubmit">예매하기</button>
+          <button type="button" class="btn ghost-close" id="ticketClose">닫기</button>
+        </div>
+      </form>
+
+      <div class="done" id="ticketDone" hidden tabindex="-1">
+        <div class="kicker">SEE YOU ON LAND</div>
+        <h3 class="serif">예매가 접수됐어요.</h3>
+        <p>아래 계좌로 입금해 주시면, 확인 후 예매가 확정돼요.</p>
+        <dl>
+          <dt>예매번호</dt><dd id="tdNo"></dd>
+          <dt>좌석</dt><dd id="tdSeats"></dd>
+          <dt>입금 금액</dt><dd id="tdAmount"></dd>
+          <dt>입금자명</dt><dd id="tdDepositor"></dd>
+          <dt>입금 계좌</dt><dd><span data-bind="order.bank"></span> <button type="button" class="linkbtn" data-copy="bank">복사</button></dd>
+        </dl>
+        <p style="font-size:14px;color:var(--muted)">이 화면을 캡처해 두시면 편해요. 공연 당일 이름과 연락처로 확인해요.</p>
+        <div class="actions">
+          <button type="button" class="btn ghost-close" id="ticketDoneClose">닫기</button>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -678,7 +747,7 @@ footer{color:#C9D3EA}
 </div>
 
 <script>
-var DEFAULT = {"accent": "#15489E", "harbor": {"kicker": "DEPARTURE · 35°09′N 129°07′E", "title": "부산 광안리에서,\n첫 항해를 시작합니다.", "sub": "0집도, 100일의 라이브도, 첫 공연도.\n모두 이 바다에서 출발해요."}, "hero": {"kicker": "SINGER-SONGWRITER", "title": "양희본", "titleAccent": "0집", "lead": "발라드와 모던록, 포크 사이 어딘가.\n조용히, 끝까지 들어야 하는 노래들."}, "live": {"headline": "100일 동안,\n매일 한 시간.", "description": "12월 14일부터 100일 동안, 부산 광안리에서 하루도 빠짐없이 유튜브 세로 라이브로 노래합니다. 0집의 노래들, 그리고 그 사이의 이야기들.", "startDate": "2026-12-14", "days": 100, "time": "매일 [방송 시간]", "place": "부산 광안리 · 유튜브 양희본"}, "album": {"title": "양희본 0집", "description": "첫 번째보다 앞에 있는 음반. 손으로 만지고, 처음부터 끝까지 들을 수 있는 실물 음반으로 만나보세요.", "tracklist": "[수록곡 목록]", "hiddenTrack": "어디에서도 들을 수 없는 히든 트랙 1곡 수록", "price": "10,000원 · 택배비 포함", "buyUrl": "#order", "buyButton": "음반 구매하기", "coverImage": "images/album0.jpg"}, "order": {"unitPrice": 10000, "priceNote": "택배비 포함", "maxQty": 10, "bank": "신한은행 957-06-111158 양희본"}, "concert": {"headline": "2027. 03. 27 토요일\n부산에서.", "description": "100일의 라이브가 끝나고 나흘 뒤, 무대에서 직접 부릅니다.", "venue": "[공연장]", "time": "[공연 시간]", "ticket": "[티켓 가격]", "ticketUrl": "", "ticketButton": "예매 알림 받기", "date": "2027-03-27", "seatRows": 5, "seatsPerRow": 10, "bookedSeats": "", "seatNote": "공연장이 정해지면 실제 배치로 바뀌어요."}, "links": {"email": ""}};
+var DEFAULT = {"accent": "#15489E", "harbor": {"kicker": "DEPARTURE · 35°09′N 129°07′E", "title": "부산 광안리에서,\n첫 항해를 시작합니다.", "sub": "0집도, 100일의 라이브도, 첫 공연도.\n모두 이 바다에서 출발해요."}, "hero": {"kicker": "SINGER-SONGWRITER", "title": "양희본", "titleAccent": "0집", "lead": "발라드와 모던록, 포크 사이 어딘가.\n조용히, 끝까지 들어야 하는 노래들."}, "live": {"headline": "100일 동안,\n매일 한 시간.", "description": "12월 14일부터 100일 동안, 부산 광안리에서 하루도 빠짐없이 유튜브 세로 라이브로 노래합니다. 0집의 노래들, 그리고 그 사이의 이야기들.", "startDate": "2026-12-14", "days": 100, "time": "매일 [방송 시간]", "place": "부산 광안리 · 유튜브 양희본"}, "album": {"title": "양희본 0집", "description": "첫 번째보다 앞에 있는 음반. 손으로 만지고, 처음부터 끝까지 들을 수 있는 실물 음반으로 만나보세요.", "tracklist": "[수록곡 목록]", "hiddenTrack": "어디에서도 들을 수 없는 히든 트랙 1곡 수록", "price": "10,000원 · 택배비 포함", "buyUrl": "#order", "buyButton": "음반 구매하기", "coverImage": "images/album0.jpg"}, "order": {"unitPrice": 10000, "priceNote": "택배비 포함", "maxQty": 10, "bank": "신한은행 957-06-111158 양희본"}, "concert": {"headline": "2027. 03. 27 토요일\n부산에서.", "description": "100일의 라이브가 끝나고 나흘 뒤, 무대에서 직접 부릅니다.", "venue": "[공연장]", "time": "[공연 시간]", "ticket": "[티켓 가격]", "ticketUrl": "", "ticketButton": "예매 알림 받기", "date": "2027-03-27", "seatRows": 5, "seatsPerRow": 10, "bookedSeats": "", "seatNote": "공연장이 정해지면 실제 배치로 바뀌어요.", "ticketOpen": false, "ticketPrice": 0}, "links": {"email": ""}};
 function get(o, path){ return path.split('.').reduce(function(a,k){ return a == null ? a : a[k]; }, o); }
 function fmt(d){
   var w = ['일','월','화','수','목','금','토'][d.getDay()];
@@ -689,12 +758,19 @@ function setLink(el, url){
   else if (url) { el.href = url; el.target = '_blank'; el.rel = 'noopener'; el.hidden = false; el.style.opacity = ''; el.style.cursor = ''; }
   else { el.removeAttribute('href'); el.style.opacity = '.55'; el.style.cursor = 'default'; }
 }
-// 좌석 배치도: 줄 수 × 한 줄 좌석 수(가운데 통로), 예매된 좌석은 "A3, A4, C7" 처럼 적은 것만 분홍
+// 좌석 배치도: 줄 수 × 한 줄 좌석 수(가운데 통로).
+// 분홍(예매 완료) = 예매서로 잡힌 좌석(Firestore concertSeats) + 관리자에서 직접 적은 '예매된 좌석'
+var seatState = { cc: {}, taken: {}, manual: {}, picked: [], picking: false };
+var TICKET_MAX = 4;
+var ticketCfg = { open: false, price: 0 };   // 공연 예매서 설정 (관리자 '0집 페이지' › 공연)
+function seatBooked(k){ return !!seatState.taken[k] || seatState.manual[k]; }
 function renderSeats(cc){
-  var rows = Math.max(1, Math.min(20, Number(cc.seatRows) || 8));
-  var per = Math.max(2, Math.min(20, Number(cc.seatsPerRow) || 14));
-  var booked = {};
-  String(cc.bookedSeats || '').toUpperCase().split(/[\s,]+/).forEach(function(k){ if (k) booked[k] = true; });
+  if (cc) seatState.cc = cc;
+  cc = seatState.cc;
+  var rows = Math.max(1, Math.min(20, Number(cc.seatRows) || 5));
+  var per = Math.max(2, Math.min(20, Number(cc.seatsPerRow) || 10));
+  seatState.manual = {};
+  String(cc.bookedSeats || '').toUpperCase().split(/[\s,]+/).forEach(function(k){ if (k) seatState.manual[k] = true; });
   var box = document.getElementById('seats'); box.textContent = '';
   var total = rows * per, taken = 0, half = Math.ceil(per / 2);
   for (var r = 0; r < rows; r++) {
@@ -702,9 +778,15 @@ function renderSeats(cc){
     var lab = document.createElement('span'); lab.className = 'rl'; lab.textContent = L; row.appendChild(lab);
     for (var n = 1; n <= per; n++) {
       if (n === half + 1) { var a = document.createElement('span'); a.className = 'aisle'; row.appendChild(a); }
-      var seat = document.createElement('i'); seat.className = 'seat';
-      if (booked[L + n]) { seat.className += ' booked'; taken++; }
-      seat.title = L + n + (booked[L + n] ? ' · 예매 완료' : '');
+      var k = L + n, b = seatBooked(k), pk = seatState.picked.indexOf(k) >= 0;
+      var seat = document.createElement('button'); seat.type = 'button'; seat.className = 'seat' + (b ? ' booked' : pk ? ' picked' : '');
+      seat.dataset.seat = k;
+      seat.disabled = b || !seatState.picking;
+      if (!seatState.picking) seat.tabIndex = -1;
+      seat.setAttribute('aria-label', k + (b ? ' 예매 완료' : pk ? ' 선택함' : ''));
+      seat.setAttribute('aria-pressed', pk ? 'true' : 'false');
+      seat.title = k + (b ? ' · 예매 완료' : '');
+      if (b) taken++;
       row.appendChild(seat);
     }
     var lab2 = document.createElement('span'); lab2.className = 'rl'; lab2.textContent = L; row.appendChild(lab2);
@@ -713,6 +795,8 @@ function renderSeats(cc){
   document.getElementById('seatCount').innerHTML = '전체 ' + total + '석 · 예매 <b>' + taken + '</b>석 · 남은 ' + (total - taken) + '석';
   box.setAttribute('aria-label', '좌석 배치도: 무대 앞 ' + rows + '줄, 전체 ' + total + '석 중 ' + taken + '석 예매 완료');
   document.getElementById('seatNote').textContent = cc.seatNote || '';
+  document.getElementById('seatmap').classList.toggle('picking', seatState.picking);
+  document.querySelector('.lg-pick').hidden = !seatState.picking;
 }
 function render(c){
   if (typeof order !== 'undefined') order.c = c;
@@ -755,8 +839,8 @@ function render(c){
   document.getElementById('route').setAttribute('aria-label', '항로: ' + md(start) + ' 광안리 출항, ' + days + '일 라이브, ' + md(land) + ' 공연에서 상륙. 지금: ' + label + ' ' + value);
   // links
   setLink(document.getElementById('buyBtn'), c.album.buyUrl);
-  setLink(document.getElementById('ticketBtn'), c.concert.ticketUrl);
   renderSeats(c.concert);
+  renderTicketBtn(c);
   var cover = document.getElementById('cover');
   if (c.album.coverImage) {
     cover.textContent = ''; cover.style.border = 'none';
@@ -909,6 +993,144 @@ document.getElementById('orderForm').addEventListener('submit', function(e){
       : '주문을 넣지 못했어요. 인터넷 연결을 확인하고 다시 시도해 주세요.');
   }).then(function(){ order.busy = false; btn.disabled = false; btn.textContent = '주문하기'; });
 });
+// ── 공연 예매서 (계좌이체) ─────────────────────────────────────────
+// 예매는 홈페이지(heebonyang) Firestore 의 tickets 에, 고른 좌석은 concertSeats/{좌석} 에 함께 저장돼요.
+// 좌석 문서는 한 번만 만들 수 있어서 같은 좌석을 두 사람이 동시에 잡을 수 없어요. 예매 목록은 홈페이지 관리자 '공연 예매'에서 확인.
+function renderTicketBtn(c){
+  var cc = c.concert || {}, btn = document.getElementById('ticketBtn'), note = document.getElementById('ticketClosed');
+  ticketCfg.open = cc.ticketOpen === true;
+  ticketCfg.price = Number(cc.ticketPrice) || 0;
+  btn.style.opacity = ''; btn.style.cursor = '';
+  if (ticketCfg.open) { btn.href = '#ticket'; btn.removeAttribute('target'); note.hidden = true; }
+  else if (cc.ticketUrl) { setLink(btn, cc.ticketUrl); note.hidden = true; }
+  else { btn.removeAttribute('href'); btn.style.opacity = '.55'; btn.style.cursor = 'default'; note.hidden = false; }
+  if (!ticketCfg.open && !document.getElementById('ticket').hidden) closeTicket(true);
+  if (document.getElementById('tMax')) { document.getElementById('tMax').textContent = TICKET_MAX; updateTicket(); }
+}
+function loadTaken(){
+  return fetch(FS + '/concertSeats?pageSize=300&mask.fieldPaths=ticket')
+    .then(function(r){ return r.ok ? r.json() : {}; })
+    .then(function(j){
+      var t = {};
+      (j.documents || []).forEach(function(d){ t[d.name.split('/').pop()] = true; });
+      seatState.taken = t;
+      seatState.picked = seatState.picked.filter(function(k){ return !t[k]; });
+      renderSeats(); updateTicket();
+    }).catch(function(){});
+}
+function showTErr(t){ var e = document.getElementById('ticketErr'); e.textContent = t; e.hidden = !t; }
+function updateTicket(){
+  var box = document.getElementById('tSeats'); if (!box) return;
+  box.textContent = '';
+  if (!seatState.picked.length) box.textContent = '아직 고른 좌석이 없어요.';
+  seatState.picked.forEach(function(k){
+    var chip = document.createElement('span'); chip.className = 'chip'; chip.textContent = k;
+    var x = document.createElement('button'); x.type = 'button'; x.dataset.unpick = k; x.setAttribute('aria-label', k + ' 선택 취소'); x.textContent = '×';
+    chip.appendChild(x); box.appendChild(chip);
+  });
+  var n = seatState.picked.length;
+  document.getElementById('tPriceNote').textContent = ticketCfg.price ? '(1석 ' + won(ticketCfg.price) + ' × ' + n + '석)' : '';
+  document.getElementById('tTotal').textContent = ticketCfg.price ? won(n * ticketCfg.price) : '가격 미정';
+}
+function openTicket(){
+  if (!ticketCfg.open) return;
+  seatState.picking = true; renderSeats(); updateTicket();
+  var t = document.getElementById('ticket'); t.hidden = false;
+  document.getElementById('seatmap').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  t.focus({ preventScroll: true });   // 입력 칸이 아니라서 휴대폰 키보드가 저절로 올라오지 않음
+  loadTaken();
+}
+function closeTicket(silent){
+  seatState.picking = false; seatState.picked = [];
+  document.getElementById('ticket').hidden = true;
+  if (!document.getElementById('ticketDone').hidden) {
+    document.getElementById('ticketDone').hidden = true;
+    document.getElementById('ticketForm').reset();
+    document.getElementById('ticketForm').hidden = false;
+  }
+  showTErr(''); renderSeats(); updateTicket();
+  if (history.replaceState && location.hash === '#ticket') history.replaceState(null, '', location.pathname + location.search);
+  if (silent === true) return;
+  var b = document.getElementById('ticketBtn');
+  b.scrollIntoView({ behavior: 'smooth', block: 'center' }); b.focus({ preventScroll: true });
+}
+document.getElementById('ticketBtn').addEventListener('click', function(e){
+  if (this.getAttribute('href') === '#ticket') { e.preventDefault(); openTicket(); }
+});
+document.getElementById('ticketClose').addEventListener('click', closeTicket);
+document.getElementById('ticketDoneClose').addEventListener('click', closeTicket);
+document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && !document.getElementById('ticket').hidden) closeTicket(); });
+document.getElementById('seats').addEventListener('click', function(e){
+  var b = e.target.closest('button.seat'); if (!b || b.disabled || !seatState.picking) return;
+  var k = b.dataset.seat, i = seatState.picked.indexOf(k);
+  if (i >= 0) seatState.picked.splice(i, 1);
+  else if (seatState.picked.length >= TICKET_MAX) { showTErr('한 번에 최대 ' + TICKET_MAX + '석까지 예매할 수 있어요.'); return; }
+  else seatState.picked.push(k);
+  showTErr(''); renderSeats(); updateTicket();
+  var again = document.querySelector('button.seat[data-seat="' + k + '"]'); if (again) again.focus({ preventScroll: true });
+});
+document.getElementById('tSeats').addEventListener('click', function(e){
+  var x = e.target.closest('[data-unpick]'); if (!x) return;
+  seatState.picked = seatState.picked.filter(function(k){ return k !== x.dataset.unpick; });
+  renderSeats(); updateTicket();
+});
+document.getElementById('ticketForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  if (ticketCfg.busy) return;
+  var v = function(id){ return document.getElementById(id).value.trim(); };
+  var name = v('tName'), phone = v('tPhone').replace(/[\s.]/g, ''), dep = v('tDepositor') || name, memo = v('tMemo');
+  var seats = seatState.picked.slice().sort(function(a, b){ return a.localeCompare(b, 'en', { numeric: true }); });
+  var bad = null;
+  if (!seats.length) bad = [null, '위 배치도에서 좌석을 하나 이상 골라 주세요.'];
+  else if (!name) bad = ['tName', '이름을 적어 주세요.'];
+  else if (!/^[0-9][0-9-]{8,13}$/.test(phone)) bad = ['tPhone', '연락처를 숫자로 적어 주세요. (예: 010-1234-5678)'];
+  else if (!document.getElementById('tAgree').checked) bad = ['tAgree', '개인정보 수집·이용에 동의해 주셔야 예매할 수 있어요.'];
+  if (bad) { showTErr(bad[1]); if (bad[0]) document.getElementById(bad[0]).focus(); else document.getElementById('seatmap').scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
+  showTErr('');
+  ticketCfg.busy = true;
+  var btn = document.getElementById('ticketSubmit'); btn.disabled = true; btn.textContent = '예매 넣는 중…';
+  var no = 'T' + orderNo();
+  var DOC = 'projects/heebonyang/databases/(default)/documents/';
+  var str = function(x){ return { stringValue: x }; };
+  var writes = [{
+    update: { name: DOC + 'tickets/' + no, fields: {
+      name: str(name), phone: str(phone), seats: { arrayValue: { values: seats.map(str) } }, qty: { integerValue: String(seats.length) },
+      depositor: str(dep), memo: str(memo), status: str('new'), agree: { booleanValue: true }
+    } },
+    updateTransforms: [{ fieldPath: 'createdAt', setToServerValue: 'REQUEST_TIME' }],
+    currentDocument: { exists: false }
+  }];
+  seats.forEach(function(k){ writes.push({ update: { name: DOC + 'concertSeats/' + k, fields: { ticket: str(no) } }, currentDocument: { exists: false } }); });
+  fetch(FS.replace(/\/documents$/, '/documents:commit'), {
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ writes: writes })
+  }).then(function(r){
+    if (r.ok) return;
+    return r.json().catch(function(){ return {}; }).then(function(j){ throw new Error((j.error && j.error.status) || r.status); });
+  }).then(function(){
+    seats.forEach(function(k){ seatState.taken[k] = true; });
+    var amount = ticketCfg.price ? won(seats.length * ticketCfg.price) + ' (' + seats.length + '석)' : seats.length + '석 · 금액은 따로 안내드려요';
+    document.getElementById('tdNo').textContent = no;
+    document.getElementById('tdSeats').textContent = seats.join(', ');
+    document.getElementById('tdAmount').textContent = amount;
+    document.getElementById('tdDepositor').textContent = dep;
+    seatState.picked = []; seatState.picking = false; renderSeats();
+    document.getElementById('ticketForm').hidden = true;
+    var done = document.getElementById('ticketDone'); done.hidden = false; done.focus({ preventScroll: true });
+    done.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }).catch(function(err){
+    var before = seats.slice();
+    return loadTaken().then(function(){
+      var gone = before.filter(function(k){ return seatState.taken[k]; });
+      if (gone.length) showTErr('방금 다른 분이 예매한 좌석이 있어요: ' + gone.join(', ') + '. 다른 좌석을 골라 주세요.');
+      else if (!ticketCfg.open) showTErr('지금은 예매를 받지 않아요.');
+      else showTErr(String(err.message) === 'PERMISSION_DENIED'
+        ? '예매를 넣지 못했어요. 입력한 내용(연락처 등)을 확인해 주세요.'
+        : '예매를 넣지 못했어요. 인터넷 연결을 확인하고 다시 시도해 주세요.');
+    });
+  }).then(function(){ ticketCfg.busy = false; btn.disabled = false; btn.textContent = '예매하기'; });
+});
+loadTaken();
+
 // 페이지 문구: 메인 홈페이지 관리자(heebonyang.web.app/admin › '0집 페이지')에서 고친 값이 Firestore settings/albumPage 에 저장돼요.
 // 아직 한 번도 저장하지 않았으면 content.json(처음 값)을 써요. 어느 쪽이든 빠진 칸은 DEFAULT 로 채워요.
 function fsValue(v){
@@ -939,7 +1161,8 @@ fetch(FS + '/settings/albumPage')
     return fetch('content.json?t=' + Date.now()).then(function(r){ return r.ok ? r.json() : null; });
   })
   .then(function(c){ if (c) render(merge(DEFAULT, c)); })
-  .catch(function(){});
+  .catch(function(){})
+  .then(function(){ if (location.hash === '#ticket') openTicket(); });
 </script>
 </body>
 </html>

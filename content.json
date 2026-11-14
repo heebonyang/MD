@@ -41,7 +41,9 @@
     "seatRows": 5,
     "seatsPerRow": 10,
     "bookedSeats": "",
-    "seatNote": "공연장이 정해지면 실제 배치로 바뀌어요."
+    "seatNote": "공연장이 정해지면 실제 배치로 바뀌어요.",
+    "ticketOpen": false,
+    "ticketPrice": 0
   },
   "links": {
     "email": ""
