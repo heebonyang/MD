@@ -38,8 +38,8 @@
     "ticket": "[티켓 가격]",
     "ticketUrl": "",
     "ticketButton": "예매 알림 받기",
-    "seatRows": 8,
-    "seatsPerRow": 14,
+    "seatRows": 5,
+    "seatsPerRow": 10,
     "bookedSeats": "",
     "seatNote": "공연장이 정해지면 실제 배치로 바뀌어요."
   },
