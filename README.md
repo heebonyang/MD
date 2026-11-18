@@ -1,3 +1,14 @@
+# 양희본 0집 웹사이트 (예전 주소)
+
+**2026-11-18부터 이 페이지는 메인 홈페이지 https://heebonyang.web.app 와 합쳐졌어요.**
+heebonmd.web.app 로 들어오면 모두 heebonyang.web.app 로 넘어가요 (`firebase.json`의 redirects).
+`#order`, `#ticket` 같은 주소 끝은 그대로 따라가서, 홈페이지에서 주문서·예매서가 바로 펼쳐져요.
+
+지금 화면과 문구는 `heebonyang/homepage` 저장소의 `app/home/` 과 관리자 '홈페이지 문구'에서 관리해요.
+이 저장소의 `index.html`은 합치기 전 마지막 모습으로 남겨 둔 기록이에요.
+
+---
+
 # 양희본 0집 웹사이트
 
 https://heebonmd.web.app

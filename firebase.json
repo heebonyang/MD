@@ -40,18 +40,13 @@
     ],
     "redirects": [
       {
-        "source": "/admin",
+        "source": "/admin{,/**}",
         "destination": "https://heebonyang.web.app/admin",
         "type": 301
       },
       {
-        "source": "/admin/",
-        "destination": "https://heebonyang.web.app/admin",
-        "type": 301
-      },
-      {
-        "source": "/admin.html",
-        "destination": "https://heebonyang.web.app/admin",
+        "source": "**",
+        "destination": "https://heebonyang.web.app/",
         "type": 301
       }
     ]
